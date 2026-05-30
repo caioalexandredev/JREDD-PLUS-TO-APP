@@ -64,41 +64,38 @@ export default function NovoEditalModal({ onClose, onCreate }: { onClose: () => 
         </div>
 
         <form onSubmit={submit} className="p-6 max-h-[65vh] overflow-y-auto space-y-4">
-          <div className="p-1 max-h-[55vh] overflow-y-auto space-y-4">
-            <Field label="Título do edital">
-              <input required value={form.title} onChange={(e) => update("title", e.target.value)} className={inputCls} placeholder="Ex.: Recuperação de nascentes — Bacia do Tocantins" />
+          <Field label="Título do edital">
+            <input required value={form.title} onChange={(e) => update("title", e.target.value)} className={inputCls} placeholder="Ex.: Recuperação de nascentes — Bacia do Tocantins" />
+          </Field>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Field label="Tema">
+              <select value={form.theme} onChange={(e) => update("theme", e.target.value)} className={inputCls}>
+                {["Recuperação", "Agricultura", "Fogo", "Educação", "Conservação", "Carbono", "Bioeconomia"].map((t) => <option key={t}>{t}</option>)}
+              </select>
             </Field>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <Field label="Tema">
-                <select value={form.theme} onChange={(e) => update("theme", e.target.value)} className={inputCls}>
-                  {["Recuperação", "Agricultura", "Fogo", "Educação", "Conservação", "Carbono", "Bioeconomia"].map((t) => <option key={t}>{t}</option>)}
-                </select>
-              </Field>
-              <Field label="Região">
-                <select value={form.region} onChange={(e) => update("region", e.target.value)} className={inputCls}>
-                  {["Norte", "Sudeste", "Leste", "Central", "Bico do Papagaio", "Estadual"].map((r) => <option key={r}>{r}</option>)}
-                </select>
-              </Field>
-            </div>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <Field label="Valor (R$)">
-                <input value={form.value} onChange={(e) => update("value", e.target.value)} className={inputCls} placeholder="1.500.000" />
-              </Field>
-              <Field label="Prazo de inscrição">
-                <input value={form.deadline} onChange={(e) => update("deadline", e.target.value)} className={inputCls} placeholder="30 dias" />
-              </Field>
-            </div>
-            <Field label="Órgão proponente">
-              <input value={form.agency} onChange={(e) => update("agency", e.target.value)} className={inputCls} />
-            </Field>
-            <Field label="Modalidade">
-              <input value={form.modality} onChange={(e) => update("modality", e.target.value)} className={inputCls} />
-            </Field>
-            <Field label="Resumo">
-              <textarea rows={4} value={form.summary} onChange={(e) => update("summary", e.target.value)} className={inputCls + " resize-none"} placeholder="Breve descrição da chamada, escopo e público-alvo." />
+            <Field label="Região">
+              <select value={form.region} onChange={(e) => update("region", e.target.value)} className={inputCls}>
+                {["Norte", "Sudeste", "Leste", "Central", "Bico do Papagaio", "Estadual"].map((r) => <option key={r}>{r}</option>)}
+              </select>
             </Field>
           </div>
-
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Field label="Valor (R$)">
+              <input value={form.value} onChange={(e) => update("value", e.target.value)} className={inputCls} placeholder="1.500.000" />
+            </Field>
+            <Field label="Prazo de inscrição">
+              <input value={form.deadline} onChange={(e) => update("deadline", e.target.value)} className={inputCls} placeholder="30 dias" />
+            </Field>
+          </div>
+          <Field label="Órgão proponente">
+            <input value={form.agency} onChange={(e) => update("agency", e.target.value)} className={inputCls} />
+          </Field>
+          <Field label="Modalidade">
+            <input value={form.modality} onChange={(e) => update("modality", e.target.value)} className={inputCls} />
+          </Field>
+          <Field label="Resumo">
+            <textarea rows={4} value={form.summary} onChange={(e) => update("summary", e.target.value)} className={inputCls + " resize-none"} placeholder="Breve descrição da chamada, escopo e público-alvo." />
+          </Field>
 
           <div className="p-4 border-t border-border bg-secondary/30 flex items-center justify-end gap-2">            <button type="button" onClick={onClose} className="px-4 py-2 text-sm rounded-full hover:bg-secondary transition-colors">Cancelar</button>
             <button type="submit" className="inline-flex items-center gap-2 rounded-full bg-foreground text-background px-5 py-2 text-sm font-medium hover:bg-foreground/90 transition-all">
