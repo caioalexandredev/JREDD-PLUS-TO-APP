@@ -8,6 +8,9 @@ const pages = {
     editais: {
         path: '/editais'
     },
+    logout: {
+        path: '/logout'
+    },
     submeter: {
         path: '/submeter'
     },

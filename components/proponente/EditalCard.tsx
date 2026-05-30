@@ -1,6 +1,6 @@
 import pages from "@/config/pages.consts";
 import { Submission } from "@/model/edital/ISubmission";
-import { SubStatus } from "@/model/edital/TSubStatus";
+import { subStatusStyle } from "@/model/edital/TSubStatus";
 import { motion } from "motion/react";
 import Link from "next/link";
 
@@ -8,14 +8,6 @@ type Props = {
   s: Submission;
   idx: number;
 }
-
-const subStatusStyle: Record<SubStatus, string> = {
-  "Rascunho": "bg-muted text-muted-foreground border-border",
-  "Em análise": "bg-ocean/10 text-ocean border-ocean/20",
-  "Aprovado": "bg-leaf/10 text-leaf border-leaf/20",
-  "Ajustes solicitados": "bg-amber-500/10 text-amber-600 border-amber-500/20",
-  "Reprovado": "bg-destructive/10 text-destructive border-destructive/20",
-};
 
 export default function EditalCard({ s, idx }: Props) {
   return <motion.article
