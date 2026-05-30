@@ -1,5 +1,6 @@
-import LoginCadastro from "@/components/auth";
+import Submeter from "@/components/submeter/Submeter";
+
 
 export default function Page() {
-  return <LoginCadastro />
+  return <Submeter />
 }
