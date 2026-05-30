@@ -11,7 +11,7 @@ export default function NavbarActions() {
     const onScroll = () => setScrolled(window.scrollY > 16);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);  
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const loginBase = darkHero
