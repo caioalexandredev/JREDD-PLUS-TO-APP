@@ -24,7 +24,6 @@ export default function HeroVisual() {
           />
           <div className="absolute inset-0 bg-linear-to-t from-primary/60 via-primary/10 to-transparent" />
 
-          {/* Floating stat chips */}
           <div className="absolute inset-0 p-6 sm:p-10 flex flex-col justify-between">
             <div className="flex flex-wrap gap-2 justify-end">
               <StatChip label="Carbono evitado" value="148.2k tCO₂e" trend="+12%" />
@@ -42,7 +41,6 @@ export default function HeroVisual() {
           </div>
         </div>
 
-        {/* Bottom indicator row */}
         <div className="mt-6 flex flex-wrap items-center justify-between gap-4 px-2">
           <div className="flex items-center gap-3 text-xs text-muted-foreground">
             <span className="font-mono">01 / 05</span>
