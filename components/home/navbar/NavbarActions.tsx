@@ -28,7 +28,7 @@ export default function NavbarActions() {
       <Link href="/auth" className={loginBase}>
         Acessar
       </Link>
-      <Link href="/submeter" className={ctaBase}>
+      <Link href="/submeter" className={ctaBase}> 
         <span className="hidden sm:inline">Submeter projeto</span>
         <span className="sm:hidden">Submeter</span>
         <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" /></svg>
