@@ -25,7 +25,7 @@ export default function NavbarActions() {
 
   return (
     <div className="ml-auto flex items-center gap-1.5 shrink-0">
-      <Link href="/login" className={loginBase}>
+      <Link href="/auth" className={loginBase}>
         Acessar
       </Link>
       <Link href="/submeter" className={ctaBase}>
