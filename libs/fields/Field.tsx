@@ -10,7 +10,7 @@ export default function Field({
   required,
   hint,
   children
-}: { label: string; span?: Span; required?: boolean; hint?: string; children: ReactNode }) {
+}: { label: string; span?: Span; required?: boolean; hint?: string|ReactNode; children: ReactNode }) {
   return (
     <div className={`col-span-12 ${spanClass[span]}`}>
       <div className="flex items-center justify-between mb-1.5">
