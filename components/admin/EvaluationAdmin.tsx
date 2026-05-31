@@ -365,18 +365,18 @@ export default function EvaluationAdmin() {
   );
 }
 
-function MapCard({ 
-  label, 
-  kind, 
-  active, 
-  onClick, 
-  stats, 
+function MapCard({
+  label,
+  kind,
+  active,
+  onClick,
+  stats,
   center
-}: { 
-  label: string; 
-  kind: "degradacao" | "fogo"; 
-  active: boolean; 
-  onClick: () => void; 
+}: {
+  label: string;
+  kind: "degradacao" | "fogo";
+  active: boolean;
+  onClick: () => void;
   stats: { l: string; v: string }[];
   center: [number, number] | null;
 }) {
@@ -391,7 +391,7 @@ function MapCard({
           {active ? "ativo" : "ativar"}
         </button>
       </div>
-      
+
       <div className="relative h-80 w-full overflow-hidden z-0 bg-secondary/20 flex flex-col items-center justify-center">
         {center ? (
           <MapVisualization kind={kind} center={center} />
