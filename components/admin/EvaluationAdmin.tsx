@@ -1,8 +1,8 @@
 "use client";
-import { editais, statusColor } from "@/mock/EditalData";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 
 type Criterio = {
   id: string;
@@ -69,12 +69,37 @@ const projeto = {
 
 const subStatusStyle = "bg-ocean/10 text-ocean border-ocean/20";
 
+const MapVisualization = dynamic(() => import("@/components/maps/RealMap"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center bg-secondary/30 text-xs text-muted-foreground font-mono">
+      Carregando mapa satélite...
+    </div>
+  ),
+});
+
 export default function EvaluationAdmin() {
   const [tab, setTab] = useState<"checklist" | "dossie">("checklist");
   const [mapView, setMapView] = useState<"degradacao" | "fogo">("degradacao");
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [parecer, setParecer] = useState("");
   const [recomendacao, setRecomendacao] = useState<"aprovar" | "ajustes" | "reprovar" | "">("");
+  const [coordenadas, setCoordenadas] = useState<[number, number] | null>(null);
+
+  useEffect(() => {
+    async function buscarDadosDoProjeto() {
+      try {
+        setTimeout(() => {
+          setCoordenadas([-10.1843, -48.3336]);
+        }, 1500);
+
+      } catch (error) {
+        console.error("Erro ao buscar coordenadas", error);
+      }
+    }
+
+    buscarDadosDoProjeto();
+  }, []);
 
   const totalWeight = criterios.reduce((s, c) => s + c.weight, 0);
   const score = useMemo(
@@ -93,7 +118,7 @@ export default function EvaluationAdmin() {
       <header className="sticky top-0 z-30 glass border-b border-border">
         <div className="mx-auto max-w-7xl px-6 h-16 flex items-center gap-4">
           <Link href="/admin" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round" /></svg>
             Voltar ao painel
           </Link>
           <div className="h-6 w-px bg-border" />
@@ -120,17 +145,20 @@ export default function EvaluationAdmin() {
             kind="degradacao"
             active={mapView === "degradacao"}
             onClick={() => setMapView("degradacao")}
+            center={coordenadas}
             stats={[
               { l: "Área degradada", v: "412 ha" },
               { l: "Severidade média", v: "Moderada" },
               { l: "Tendência 12m", v: "↘ -8%" },
             ]}
           />
+
           <MapCard
             label="Focos de calor / fogo"
             kind="fogo"
             active={mapView === "fogo"}
             onClick={() => setMapView("fogo")}
+            center={coordenadas}
             stats={[
               { l: "Focos (90 dias)", v: "37" },
               { l: "Risco atual", v: "Alto" },
@@ -178,7 +206,7 @@ export default function EvaluationAdmin() {
                             className={`w-full text-left flex items-start gap-3 p-3 rounded-xl border transition-all ${on ? "bg-leaf/5 border-leaf/40" : "bg-secondary/40 border-transparent hover:border-border"}`}
                           >
                             <span className={`mt-0.5 h-5 w-5 shrink-0 rounded-md border-2 inline-flex items-center justify-center transition-all ${on ? "bg-leaf border-leaf" : "border-border bg-background"}`}>
-                              {on && <svg className="h-3 w-3 text-background" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                              {on && <svg className="h-3 w-3 text-background" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" /></svg>}
                             </span>
                             <span className="flex-1 min-w-0">
                               <span className="flex items-center justify-between gap-2">
@@ -327,7 +355,7 @@ export default function EvaluationAdmin() {
               onClick={save}
               className="inline-flex items-center gap-2 rounded-full bg-gradient-hero text-primary-foreground px-6 py-3 text-sm font-medium shadow-glow hover:shadow-elevated transition-all hover:-translate-y-0.5"
             >
-              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" /></svg>
               Salvar avaliação
             </button>
           </div>
@@ -337,7 +365,21 @@ export default function EvaluationAdmin() {
   );
 }
 
-function MapCard({ label, kind, active, onClick, stats }: { label: string; kind: "degradacao" | "fogo"; active: boolean; onClick: () => void; stats: { l: string; v: string }[] }) {
+function MapCard({ 
+  label, 
+  kind, 
+  active, 
+  onClick, 
+  stats, 
+  center
+}: { 
+  label: string; 
+  kind: "degradacao" | "fogo"; 
+  active: boolean; 
+  onClick: () => void; 
+  stats: { l: string; v: string }[];
+  center: [number, number] | null;
+}) {
   return (
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className={`bg-card border rounded-3xl overflow-hidden transition-all ${active ? "border-primary/40 shadow-soft" : "border-border"}`}>
       <div className="px-5 py-4 flex items-center justify-between border-b border-border">
@@ -349,9 +391,20 @@ function MapCard({ label, kind, active, onClick, stats }: { label: string; kind:
           {active ? "ativo" : "ativar"}
         </button>
       </div>
-      <div className="relative h-56 overflow-hidden">
-        <MapVisualization kind={kind} />
+      
+      <div className="relative h-80 w-full overflow-hidden z-0 bg-secondary/20 flex flex-col items-center justify-center">
+        {center ? (
+          <MapVisualization kind={kind} center={center} />
+        ) : (
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-6 h-6 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
+            <span className="text-xs text-muted-foreground font-mono animate-pulse">
+              Buscando satélite...
+            </span>
+          </div>
+        )}
       </div>
+
       <div className="grid grid-cols-3 divide-x divide-border border-t border-border">
         {stats.map((s) => (
           <div key={s.l} className="p-3">
@@ -361,77 +414,6 @@ function MapCard({ label, kind, active, onClick, stats }: { label: string; kind:
         ))}
       </div>
     </motion.div>
-  );
-}
-
-function MapVisualization({ kind }: { kind: "degradacao" | "fogo" }) {
-  // SVG decorative "map" — Tocantins-ish silhouette + heat points
-  const points = kind === "degradacao"
-    ? [
-        { x: 120, y: 80, r: 28, o: 0.5 },
-        { x: 160, y: 130, r: 36, o: 0.45 },
-        { x: 200, y: 110, r: 22, o: 0.55 },
-        { x: 230, y: 170, r: 30, o: 0.4 },
-        { x: 140, y: 200, r: 26, o: 0.5 },
-      ]
-    : [
-        { x: 110, y: 100, r: 8, o: 0.9 },
-        { x: 145, y: 90, r: 6, o: 0.95 },
-        { x: 175, y: 140, r: 10, o: 0.85 },
-        { x: 210, y: 120, r: 7, o: 0.9 },
-        { x: 195, y: 175, r: 9, o: 0.8 },
-        { x: 160, y: 195, r: 6, o: 0.95 },
-        { x: 230, y: 95, r: 7, o: 0.85 },
-        { x: 130, y: 160, r: 8, o: 0.9 },
-      ];
-  const color = kind === "degradacao" ? "oklch(0.62 0.16 35)" : "oklch(0.68 0.22 25)";
-  return (
-    <svg viewBox="0 0 360 224" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
-      <defs>
-        <linearGradient id={`bg-${kind}`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="oklch(0.96 0.02 150)" />
-          <stop offset="100%" stopColor="oklch(0.92 0.04 160)" />
-        </linearGradient>
-        <radialGradient id={`pt-${kind}`}>
-          <stop offset="0%" stopColor={color} stopOpacity="0.9" />
-          <stop offset="100%" stopColor={color} stopOpacity="0" />
-        </radialGradient>
-      </defs>
-      <rect width="360" height="224" fill={`url(#bg-${kind})`} />
-      {/* rivers */}
-      <path d="M40 40 Q120 80 100 140 T180 220" stroke="oklch(0.78 0.08 220)" strokeWidth="2" fill="none" opacity="0.6" />
-      <path d="M280 20 Q230 90 260 160 T220 224" stroke="oklch(0.78 0.08 220)" strokeWidth="2" fill="none" opacity="0.5" />
-      {/* state silhouette */}
-      <path
-        d="M90 30 L240 25 L290 70 L300 140 L260 200 L180 215 L120 200 L80 150 L70 90 Z"
-        fill="oklch(0.88 0.06 150)"
-        stroke="oklch(0.55 0.08 150)"
-        strokeWidth="1.5"
-        opacity="0.85"
-      />
-      {/* grid */}
-      {Array.from({ length: 7 }).map((_, i) => (
-        <line key={`v${i}`} x1={i * 60} y1="0" x2={i * 60} y2="224" stroke="oklch(0.6 0.02 150)" strokeOpacity="0.08" />
-      ))}
-      {Array.from({ length: 5 }).map((_, i) => (
-        <line key={`h${i}`} x1="0" y1={i * 56} x2="360" y2={i * 56} stroke="oklch(0.6 0.02 150)" strokeOpacity="0.08" />
-      ))}
-      {/* heat points */}
-      {points.map((p, i) => (
-        <g key={i}>
-          <circle cx={p.x} cy={p.y} r={p.r} fill={`url(#pt-${kind})`} opacity={p.o} />
-          <circle cx={p.x} cy={p.y} r={kind === "fogo" ? 3 : 4} fill={color} />
-        </g>
-      ))}
-      {/* legend */}
-      <g transform="translate(12,196)">
-        <rect width="116" height="20" rx="10" fill="oklch(1 0 0 / 0.85)" />
-        <circle cx="14" cy="10" r="4" fill={color} />
-        <text x="24" y="14" fontSize="10" fontFamily="ui-monospace, monospace" fill="oklch(0.3 0.02 150)">
-          {kind === "degradacao" ? "intensidade" : "focos ativos"}
-        </text>
-      </g>
-    </svg>
   );
 }
 

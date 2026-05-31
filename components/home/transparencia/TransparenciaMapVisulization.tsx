@@ -19,7 +19,6 @@ export default function TransparenciaMaopVisulization() {
         </div>
       </div>
 
-      {/* Stylized map dots */}
       <div className="relative h-64">
         <svg viewBox="0 0 400 280" className="w-full h-full">
           <defs>

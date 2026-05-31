@@ -17,7 +17,6 @@ export default function Transparencia() {
         <TransparenciaHeader />
         <TransparenciaGrid />
 
-        {/* Map visualization */}
         <div className="mt-16 grid lg:grid-cols-3 gap-6">
 
         <TransparenciaMaopVisulization />
