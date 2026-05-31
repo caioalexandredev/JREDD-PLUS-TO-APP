@@ -64,7 +64,7 @@ export default function Submeter(): React.ReactNode {
             <button className="text-sm px-3 py-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors hidden sm:inline-flex">
               Salvar rascunho
             </button>
-            <Link href={pages.painel.path} className="text-sm px-3 py-2 rounded-full border border-border hover:bg-secondary transition-colors">Sair</Link>
+            <Link href={pages.logout.path} className="text-sm px-3 py-2 rounded-full border border-border hover:bg-secondary transition-colors">Sair</Link>
           </div>
         </div>
         <div className="h-0.5 bg-border/50">

@@ -17,7 +17,7 @@ export default function HeaderProponente() {
       </div>
       <div className="ml-auto flex items-center gap-3">
         <Link href="/editais" className="text-sm px-3 py-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors hidden sm:inline-flex">Editais</Link>
-        <Link href="/" className="text-sm px-3 py-2 rounded-full border border-border hover:bg-secondary transition-colors">Sair</Link>
+        <Link href={pages.logout.path} className="text-sm px-3 py-2 rounded-full border border-border hover:bg-secondary transition-colors">Sair</Link>
       </div>
     </div>
   </header>

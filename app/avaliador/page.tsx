@@ -1,5 +1,10 @@
+import { Suspense } from "react";
 import Avaliador from "@/components/avaliador";
 
 export default function Page() {
-  return <Avaliador />;
+  return (
+    <Suspense fallback={null}>
+      <Avaliador />
+    </Suspense>
+  );
 }

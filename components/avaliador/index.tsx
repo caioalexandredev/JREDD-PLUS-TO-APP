@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import DashboardHeader from "@/components/shared/DashboardHeader";
 import DemonstrationTable from "@/libs/table/DemonstrationTable";
@@ -45,6 +46,8 @@ type EditalDetalhe = EditalResumo & {
 };
 
 export default function Avaliador() {
+  const searchParams = useSearchParams();
+  const statusParam = searchParams.get("status");
   const [editais, setEditais] = useState<EditalResumo[]>([]);
   const [selected, setSelected] = useState<EditalResumo | null>(null);
   const [detalhe, setDetalhe] = useState<EditalDetalhe | null>(null);
@@ -59,12 +62,13 @@ export default function Avaliador() {
   useEffect(() => {
     api<EditalResumo[]>("/avaliador/editais")
       .then((data) => {
-        setEditais(data);
-        setSelected(data[0] ?? null);
+        const filtered = statusParam ? data.filter((edital) => edital.status === statusParam) : data;
+        setEditais(filtered);
+        setSelected(filtered[0] ?? null);
       })
       .catch(() => toast.error("Nao foi possivel carregar seus editais."));
     api<User[]>("/users/perfil?profile=AUDITOR").then(setAuditores).catch(() => setAuditores([]));
-  }, []);
+  }, [statusParam]);
 
   useEffect(() => {
     if (!selected) return;

@@ -30,7 +30,7 @@ export default function DashboardHeader({
               {secondaryLink.label}
             </Link>
           )}
-          <Link href="/" className="text-sm px-3 py-2 rounded-full border border-border hover:bg-secondary transition-colors">Sair</Link>
+          <Link href={pages.logout.path} className="text-sm px-3 py-2 rounded-full border border-border hover:bg-secondary transition-colors">Sair</Link>
         </div>
       </div>
     </header>
