@@ -1,3 +1,4 @@
+import info from "@/config/app.info";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -22,7 +23,7 @@ export default function NavbarBrand() {
           <path d="M12 2v20M2 12h20" strokeLinecap="round" />
         </svg>
       </span>
-      <span className="font-display text-xl leading-none tracking-tight">JREDD+</span>
+      <span className="font-display text-xl leading-none tracking-tight">{info.name}</span>
       <span className={`text-[10px] uppercase tracking-[0.18em] hidden sm:inline pl-0.5 pt-0.5 ${darkHero ? "text-background/50" : "text-muted-foreground"}`}>TO</span>
     </Link>
   );

@@ -10,6 +10,7 @@ import HeaderLoginCadastro from "./HeaderLoginCadastro";
 import { toast } from "sonner";
 import { api, login, routeForProfile } from "@/libs/api";
 import { useRouter } from "next/navigation";
+import info from "@/config/app.info";
 
 export default function LoginCadastro() {
   const [mode, setMode] = useState<"signin" | "signup">("signin");
@@ -101,7 +102,7 @@ export default function LoginCadastro() {
             {mode === "signup" && (
               <label className="flex items-start gap-2.5 text-xs text-muted-foreground pt-1">
                 <input type="checkbox" required className="mt-0.5 h-4 w-4 rounded border-border accent-leaf" />
-                <span>Li e concordo com os <a href="#" className="text-foreground underline">Termos de Uso</a> e a <a href="#" className="text-foreground underline">Politica LGPD</a> do Programa JREDD+.</span>
+                <span>Li e concordo com os <a href="#" className="text-foreground underline">Termos de Uso</a> e a <a href="#" className="text-foreground underline">Politica LGPD</a> do Programa {info.name}.</span>
               </label>
             )}
             <Button

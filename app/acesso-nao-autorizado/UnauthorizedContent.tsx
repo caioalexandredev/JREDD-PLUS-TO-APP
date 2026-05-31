@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { clearSession } from "@/libs/api";
+import info from "@/config/app.info";
 
 export default function UnauthorizedContent() {
   const searchParams = useSearchParams();
@@ -21,7 +22,7 @@ export default function UnauthorizedContent() {
         <p className="mt-4 text-muted-foreground max-w-2xl leading-relaxed">
           {isSession
             ? "Sua sessao expirou ou nao foi reconhecida. Entre novamente para continuar usando os modulos protegidos da plataforma."
-            : "O perfil da sua conta nao possui autorizacao para este painel. Cada area do JREDD+ e liberada conforme o papel do usuario."}
+            : `O perfil da sua conta nao possui autorizacao para este painel. Cada area do ${info.name} e liberada conforme o papel do usuario.`}
         </p>
 
         <div className="mt-8 flex flex-col sm:flex-row gap-3">

@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import { toast } from "sonner";
 import Field from "@/libs/fields/Field";
 import { api, uploadDocumento, User } from "@/libs/api";
+import info from "@/config/app.info";
 
 type Option = {
   id: number;
@@ -182,7 +183,7 @@ export default function NovoEditalModal({ onClose, onCreated }: { onClose: () =>
         <div className="p-6 border-b border-border flex items-start justify-between gap-4">
           <div>
             <div className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground font-mono"><span className="text-destructive">●</span> Cadastro de edital</div>
-            <h2 className="mt-2 font-display text-2xl tracking-[-0.01em]">Novo edital JREDD+</h2>
+            <h2 className="mt-2 font-display text-2xl tracking-[-0.01em]">Novo edital {info.name}</h2>
             <p className="mt-1 text-sm text-muted-foreground">Cadastre a chamada com criterios, avaliadores e documentos oficiais.</p>
           </div>
           <button onClick={onClose} className="h-9 w-9 inline-flex items-center justify-center rounded-full hover:bg-secondary transition-colors">

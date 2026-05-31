@@ -2,6 +2,7 @@ import Link from "next/link";
 import Navbar from "@/components/home/navbar";
 import Rodape from "@/components/home/rodape";
 import { editais, statusColor } from "@/mock/EditalData";
+import info from "@/config/app.info";
 
 export default function EditaisPage() {
   return (
@@ -14,7 +15,7 @@ export default function EditaisPage() {
             Editais ambientais abertos e em acompanhamento
           </h1>
           <p className="mt-4 text-muted-foreground">
-            Consulte chamadas, prazos, regioes e documentos para preparar propostas ao JREDD+.
+            Consulte chamadas, prazos, regioes e documentos para preparar propostas ao {info.name}.
           </p>
         </div>
 

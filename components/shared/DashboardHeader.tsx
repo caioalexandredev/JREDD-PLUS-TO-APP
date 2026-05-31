@@ -1,3 +1,4 @@
+import info from "@/config/app.info";
 import pages from "@/config/pages.consts";
 import Link from "next/link";
 
@@ -17,7 +18,7 @@ export default function DashboardHeader({
           <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-gradient-hero">
             <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-primary-foreground" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 2v20M2 12h20" strokeLinecap="round" /></svg>
           </span>
-          <span className="font-display text-xl tracking-tight">JREDD+</span>
+          <span className="font-display text-xl tracking-tight">{info.name}</span>
         </Link>
         <div className="h-6 w-px bg-border hidden sm:block" />
         <div className="hidden sm:block">

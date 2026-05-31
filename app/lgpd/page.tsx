@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Navbar from "@/components/home/navbar";
 import Rodape from "@/components/home/rodape";
+import info from "@/config/app.info";
 
 export default function LgpdPage() {
   return (
@@ -10,7 +11,7 @@ export default function LgpdPage() {
         <div className="text-xs uppercase tracking-[0.22em] text-muted-foreground font-mono">LGPD</div>
         <h1 className="mt-3 font-display text-5xl leading-[1.02]">Protecao de dados pessoais</h1>
         <p className="mt-5 text-muted-foreground leading-relaxed">
-          O JREDD+ trata dados pessoais apenas para cadastro, submissao, avaliacao, auditoria e transparencia dos projetos ambientais. O acesso aos paineis internos e limitado ao perfil autorizado de cada usuario.
+          O {info.name} trata dados pessoais apenas para cadastro, submissao, avaliacao, auditoria e transparencia dos projetos ambientais. O acesso aos paineis internos e limitado ao perfil autorizado de cada usuario.
         </p>
         <div className="mt-8 grid sm:grid-cols-3 gap-3">
           {["Finalidade clara", "Acesso controlado", "Rastreabilidade"].map((item) => (

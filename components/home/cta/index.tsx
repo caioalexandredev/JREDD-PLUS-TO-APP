@@ -1,3 +1,4 @@
+import info from "@/config/app.info";
 import Link from "next/link";
 
 
@@ -11,7 +12,7 @@ export default function CTA() {
 
           <div className="relative">
             <div className="text-xs uppercase tracking-[0.22em] text-primary-foreground/60 mb-6 font-mono">
-              <span>●</span> JREDD+ Tocantins · 2026
+              <span>●</span> {info.name} · 2026
             </div>
             <h2 className="font-display text-5xl sm:text-7xl tracking-[-0.02em] leading-[0.98] max-w-3xl">
               Sua organização pode ser a próxima a

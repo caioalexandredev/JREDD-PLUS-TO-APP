@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import DashboardHeader from "@/components/shared/DashboardHeader";
 import DemonstrationTable from "@/libs/table/DemonstrationTable";
 import { api, User } from "@/libs/api";
+import info from "@/config/app.info";
 
 type EditalResumo = {
   id: number;
@@ -140,7 +141,7 @@ export default function Avaliador() {
 
   return (
     <div className="min-h-screen bg-background">
-      <DashboardHeader label="Area do avaliador" title="Avaliacao tecnica JREDD+" />
+      <DashboardHeader label="Area do avaliador" title={`Avaliacao Tecnica ${info.name}`} />
       <main className="mx-auto max-w-7xl px-6 py-12">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
