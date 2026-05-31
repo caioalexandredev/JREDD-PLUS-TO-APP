@@ -144,6 +144,58 @@ http://localhost:3000
 
 ---
 
+### 🐳 Rodando com Docker (Produção)
+
+Certifique-se de ter o [Docker](https://www.docker.com/) e o [Docker Compose](https://docs.docker.com/compose/) instalados.
+
+**1. Configure as variáveis de ambiente**
+
+> ✏️ Edite o arquivo `.env.local` com as configurações do seu ambiente antes de subir o container.
+
+**2. Suba o container de produção**
+
+```bash
+docker compose up --build
+```
+
+> A flag `--build` garante que a imagem será reconstruída. Em execuções posteriores, sem alterações no código, pode omiti-la:
+
+```bash
+docker compose up
+```
+
+**3. Para rodar em background (modo detached)**
+
+```bash
+docker compose up --build -d
+```
+
+**4. Acesse no navegador**
+
+```
+http://localhost:3000
+```
+
+**5. Para derrubar o container**
+
+```bash
+docker compose down
+```
+
+> 💡 O container é configurado com `restart: always` — em ambientes de servidor, ele reiniciará automaticamente após reboots ou falhas.
+
+#### Detalhes da Imagem
+
+O `Dockerfile` usa um build **multi-stage** com Node.js 20 Alpine para manter a imagem final enxuta:
+
+| Stage | Descrição |
+|-------|-----------|
+| `deps` | Instala as dependências via `npm ci` |
+| `builder` | Executa o build de produção (`npm run build`) |
+| `runner` | Imagem final — copia apenas os artefatos necessários |
+
+---
+
 ## ✅ Checklist de Objetivos
 
 ### 🏛️ Módulos da Plataforma
@@ -256,12 +308,12 @@ Como devo estruturar as pastas, layouts e rotas para máxima reutilização de c
 mantendo separação clara de responsabilidades e facilitando a adição futura de novos módulos?
 ```
 
-**Claude — Documentação Técnica**
+**Gemini — Documentação Técnica**
 ```
 Com base nessa estrutura de projeto Next.js com os módulos: cadastro, registro de projetos,
-rastreabilidade, distribuição de fundos e auditoria, gere uma documentação técnica
+rastreabilidade, distribuição de fundos e auditoria — gere uma documentação técnica
 dos endpoints da API incluindo parâmetros, tipos, exemplos de request/response
-e códigos de erro possíveis.
+e códigos de erro possíveis, no formato Markdown.
 ```
 
 ### ⚠️ Supervisão Humana
@@ -269,8 +321,6 @@ e códigos de erro possíveis.
 Todo o conteúdo gerado por IA foi supervisionado pela equipe de desenvolvimento, que manteve responsabilidade pelas decisões arquiteturais, revisão crítica do código e adequação ao contexto e missão da plataforma.
 
 O uso de IA tem como objetivo **acelerar a entrega de valor**, mantendo os padrões de qualidade, segurança e o compromisso socioambiental da EcoVertice Tocantins.
-
----
 
 ---
 
