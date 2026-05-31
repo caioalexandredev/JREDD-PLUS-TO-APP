@@ -24,6 +24,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-06B6D4?style=for-the-badge&logo=tailwindcss)
 ![Framer Motion](https://img.shields.io/badge/Framer_Motion-12-EF008F?style=for-the-badge&logo=framer)
+![Leaflet](https://img.shields.io/badge/Leaflet-1.9.4-199900?style=for-the-badge&logo=leaflet)
 
 </div>
 
@@ -39,16 +40,36 @@ A **JREDD+ Tocantins** é uma solução tecnológica integrada de ponta a ponta 
 
 ## 🏗️ Arquitetura & Tecnologias
 
-| Camada | Tecnologia | Versão |
-|--------|-----------|--------|
-| **Framework** | Next.js | 16.2.6 |
-| **UI Library** | React | 19.2.4 |
-| **Linguagem** | TypeScript | ^5 |
-| **Estilização** | Tailwind CSS | ^4 |
-| **Animações** | Framer Motion | ^12.40.0 |
-| **Notificações** | Sonner | ^2.0.7 |
-| **Utilitários CSS** | clsx + tailwind-merge | latest |
-| **Variantes de Classes** | class-variance-authority | ^0.7.1 |
+### Dependências de Produção
+
+| Pacote | Versão | Descrição |
+|--------|--------|-----------|
+| **next** | 16.2.6 | Framework principal (App Router) |
+| **react** | 19.2.4 | Biblioteca de UI |
+| **react-dom** | 19.2.4 | Renderização DOM do React |
+| **typescript** | ^5 | Superset tipado de JavaScript |
+| **tailwindcss** | ^4 | Framework de estilização utility-first |
+| **framer-motion** | ^12.40.0 | Animações declarativas |
+| **motion** | ^12.40.0 | Engine de animação (companion do Framer Motion) |
+| **leaflet** | ^1.9.4 | Mapas interativos |
+| **react-leaflet** | ^5.0.0 | Integração do Leaflet com React |
+| **sonner** | ^2.0.7 | Notificações toast |
+| **clsx** | ^2.1.1 | Utilitário para composição de classes CSS |
+| **tailwind-merge** | ^3.6.0 | Merge inteligente de classes Tailwind |
+| **class-variance-authority** | ^0.7.1 | Variantes de componentes com CVA |
+| **tw-animate-css** | ^1.4.0 | Animações CSS via Tailwind |
+
+### Dependências de Desenvolvimento
+
+| Pacote | Versão | Descrição |
+|--------|--------|-----------|
+| **@tailwindcss/postcss** | ^4 | Plugin PostCSS para Tailwind |
+| **@types/leaflet** | ^1.9.21 | Tipos TypeScript para Leaflet |
+| **@types/node** | ^20 | Tipos TypeScript para Node.js |
+| **@types/react** | ^19 | Tipos TypeScript para React |
+| **@types/react-dom** | ^19 | Tipos TypeScript para React DOM |
+| **eslint** | ^9 | Linter de código |
+| **eslint-config-next** | 16.2.6 | Configuração ESLint para Next.js |
 
 ---
 
@@ -196,6 +217,16 @@ Contribuições são muito bem-vindas! Para contribuir:
 ## 📄 Licença
 
 Este projeto está sob licença privada. Todos os direitos reservados © JREDD+ Tocantins.
+
+---
+
+## 🤖 Aviso sobre Inteligência Artificial
+
+> Este projeto foi desenvolvido com o auxílio de ferramentas de **Inteligência Artificial generativa**, incluindo assistentes de código baseados em IA (como o Claude, da Anthropic), que contribuíram na geração, revisão e refatoração de trechos de código, estruturas de componentes e documentação.
+>
+> O uso de IA foi supervisionado pela equipe de desenvolvimento, que manteve a responsabilidade pelas decisões arquiteturais, revisão crítica do código gerado e adequação ao contexto do projeto.
+>
+> A adoção de IA no processo de desenvolvimento tem como objetivo acelerar a entrega de valor, mantendo os padrões de qualidade, segurança e missão da plataforma JREDD+ Tocantins.
 
 ---
 
