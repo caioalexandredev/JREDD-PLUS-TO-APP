@@ -35,6 +35,7 @@ export default function RootLayout({
           position="top-right"
           richColors
           expand={false}
+          closeButton={true}
         />
       </body>
     </html>
