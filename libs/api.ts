@@ -102,8 +102,42 @@ export async function uploadDocumento(file: File, contexto: "EDITAL" | "EVIDENCI
   });
 }
 
+export async function downloadDocumento(documentoId: string, fallbackName = `documento-${documentoId}`) {
+  const token = getToken();
+  const headers = new Headers();
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+
+  const response = await fetch(`${API_URL}/documentos/${documentoId}`, { headers });
+  if (!response.ok) {
+    throw new Error("Nao foi possivel baixar o documento.");
+  }
+
+  const blob = await response.blob();
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = getFilenameFromDisposition(response.headers.get("Content-Disposition")) || fallbackName;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  URL.revokeObjectURL(url);
+}
+
 function redirectUnauthorized(reason: "session" | "role") {
   if (typeof window === "undefined") return;
   if (window.location.pathname === "/acesso-nao-autorizado") return;
   window.location.assign(`/acesso-nao-autorizado?reason=${reason}`);
+}
+
+function getFilenameFromDisposition(disposition: string | null) {
+  if (!disposition) return "";
+  const encodedMatch = disposition.match(/filename\*=UTF-8''([^;]+)/i);
+  if (encodedMatch?.[1]) {
+    return decodeURIComponent(encodedMatch[1].replace(/"/g, ""));
+  }
+
+  const plainMatch = disposition.match(/filename="?([^"]+)"?/i);
+  return plainMatch?.[1] ?? "";
 }

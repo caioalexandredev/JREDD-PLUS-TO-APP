@@ -6,7 +6,7 @@ import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { toast } from "sonner";
 import DashboardHeader from "@/components/shared/DashboardHeader";
-import { api, getStoredUser, getToken, uploadDocumento } from "@/libs/api";
+import { api, downloadDocumento, getStoredUser, uploadDocumento } from "@/libs/api";
 import {
   evidenciaStatusColor,
   evidenciaStatusLabel,
@@ -15,8 +15,6 @@ import {
   projetoStatusColor,
   projetoStatusLabel,
 } from "@/libs/jredd-api-types";
-
-const API_URL = (process.env.NEXT_PUBLIC_API_URL?.trim() || "http://localhost:8282").replace(/\/$/, "");
 
 export default function ProjetoDetalhePage() {
   const params = useParams<{ id: string }>();
@@ -80,19 +78,9 @@ export default function ProjetoDetalhePage() {
   const baixarDocumento = async (documentoId?: string | null) => {
     if (!documentoId) return;
     try {
-      const response = await fetch(`${API_URL}/documentos/${documentoId}`, {
-        headers: getToken() ? { Authorization: `Bearer ${getToken()}` } : undefined,
-      });
-      if (!response.ok) throw new Error("download");
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      const anchor = document.createElement("a");
-      anchor.href = url;
-      anchor.download = `documento-${documentoId}`;
-      anchor.click();
-      URL.revokeObjectURL(url);
-    } catch {
-      toast.error("Nao foi possivel baixar o documento.");
+      await downloadDocumento(documentoId);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Nao foi possivel baixar o documento.");
     }
   };
 

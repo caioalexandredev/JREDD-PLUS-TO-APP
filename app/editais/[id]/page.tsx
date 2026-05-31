@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 import Navbar from "@/components/home/navbar";
 import Rodape from "@/components/home/rodape";
-import { api } from "@/libs/api";
+import { api, downloadDocumento } from "@/libs/api";
 import {
   DocumentoVinculadoApi,
   editalStatusColor,
@@ -14,8 +15,6 @@ import {
   formatCurrencyRange,
   formatDate,
 } from "@/libs/jredd-api-types";
-
-const API_URL = (process.env.NEXT_PUBLIC_API_URL?.trim() || "http://localhost:8282").replace(/\/$/, "");
 
 export default function EditalPublicoDetalhePage() {
   const params = useParams<{ id: string }>();
@@ -140,15 +139,22 @@ function Info({ label, value }: { label: string; value: string }) {
 }
 
 function DocumentoRow({ documento }: { documento: DocumentoVinculadoApi }) {
+  const handleDownload = async () => {
+    try {
+      await downloadDocumento(documento.id, documento.nomeOriginal);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Nao foi possivel baixar o documento.");
+    }
+  };
+
   return (
-    <a
-      href={`${API_URL}/documentos/${documento.id}`}
-      target="_blank"
-      rel="noreferrer"
-      className="block rounded-2xl border border-border bg-secondary/30 p-4 hover:bg-secondary/60 transition-colors"
+    <button
+      type="button"
+      onClick={handleDownload}
+      className="block w-full rounded-2xl border border-border bg-secondary/30 p-4 text-left hover:bg-secondary/60 transition-colors"
     >
       <div className="font-medium truncate">{documento.nomeOriginal}</div>
       <div className="mt-1 text-[10px] uppercase tracking-[0.16em] text-muted-foreground font-mono">Baixar documento</div>
-    </a>
+    </button>
   );
 }

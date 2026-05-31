@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { api, uploadDocumento } from "@/libs/api";
+import { api, downloadDocumento, uploadDocumento } from "@/libs/api";
 import {
   DocumentoEditalApi,
   DocumentoVinculadoApi,
@@ -16,15 +16,12 @@ import {
 } from "@/libs/jredd-api-types";
 import { FileUploadAside } from "@/libs/fields/FileUploadAside";
 
-const API_URL = (process.env.NEXT_PUBLIC_API_URL?.trim() || "http://localhost:8282").replace(/\/$/, "");
-
 export default function AdminEditalDetalhePage() {
   const params = useParams<{ id: string }>();
   const editalId = params.id;
   const [edital, setEdital] = useState<EditalDetalheApi | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [files, setFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
 
   const loadEdital = useCallback(async () => {
@@ -48,10 +45,6 @@ export default function AdminEditalDetalhePage() {
 
   const documentos = useMemo(() => edital?.documentos ?? [], [edital]);
   const criterios = useMemo(() => [...(edital?.criterios ?? [])].sort((a, b) => (a.ordem ?? 0) - (b.ordem ?? 0)), [edital]);
-
-  const onFilesChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setFiles(Array.from(event.target.files ?? []));
-  };
 
   const uploadAndLink = async (filesToUpload: File[]) => {
     if (!editalId || filesToUpload.length === 0) {
@@ -186,20 +179,27 @@ function Info({ label, value }: { label: string; value: string }) {
 }
 
 function DocumentoRow({ documento }: { documento: DocumentoVinculadoApi }) {
+  const handleDownload = async () => {
+    try {
+      await downloadDocumento(documento.id, documento.nomeOriginal);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Nao foi possivel baixar o documento.");
+    }
+  };
+
   return (
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border border-border bg-secondary/30 p-4">
       <div className="min-w-0">
         <div className="font-medium truncate">{documento.nomeOriginal}</div>
         <div className="mt-1 text-[10px] uppercase tracking-[0.16em] text-muted-foreground font-mono">{documento.id}</div>
       </div>
-      <a
-        href={`${API_URL}/documentos/${documento.id}`}
-        target="_blank"
-        rel="noreferrer"
+      <button
+        type="button"
+        onClick={handleDownload}
         className="inline-flex justify-center rounded-full border border-border px-4 py-2 text-sm hover:bg-card transition-colors"
       >
         Baixar
-      </a>
+      </button>
     </div>
   );
 }

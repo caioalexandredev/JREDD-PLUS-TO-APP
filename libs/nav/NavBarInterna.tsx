@@ -1,6 +1,10 @@
+"use client";
+
 import info from "@/config/app.info";
 import pages from "@/config/pages.consts";
+import { getStoredUser, routeForProfile } from "@/libs/api";
 import Link from "next/link";
+import { MouseEvent } from "react";
 
 type Props = {
   title: string;
@@ -10,10 +14,17 @@ type Props = {
 export default function NavBarInterna({
   title = 'Instituto Verde Tocantins', subtitle = 'Área do proponente'
 }: Props) {
+  const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    const user = getStoredUser();
+    if (!user) return;
+    event.preventDefault();
+    window.location.assign(routeForProfile(user.profile));
+  };
+
   return (
     <header className="sticky top-0 z-30 bg-white/70 backdrop-blur-md border-b border-border">
       <div className="mx-auto max-w-7xl px-6 h-16 flex items-center gap-4">
-        <Link href={pages.home.path} className="flex items-center gap-2 shrink-0">
+        <Link href={pages.home.path} onClick={handleLogoClick} className="flex items-center gap-2 shrink-0">
           <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-gradient-hero">
             <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-primary-foreground" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path d="M12 2v20M2 12h20" strokeLinecap="round" />
