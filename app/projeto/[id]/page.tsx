@@ -25,9 +25,11 @@ export default function ProjetoDetalhePage() {
   const [atividadeId, setAtividadeId] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [sending, setSending] = useState(false);
+  const [startingEvaluation, setStartingEvaluation] = useState(false);
 
   const user = useMemo(() => getStoredUser(), []);
   const canSendEvidence = user?.profile === "PROPONENTE" && (projeto?.status === "APROVADO" || projeto?.status === "EM_EXECUCAO");
+  const canStartEvaluation = user?.profile === "ADMINISTRADOR" && projeto?.status === "SUBMETIDO";
 
   const loadProjeto = useCallback(async () => {
     if (!params.id) return;
@@ -84,6 +86,22 @@ export default function ProjetoDetalhePage() {
     }
   };
 
+  const iniciarAvaliacao = async () => {
+    if (!projeto) return;
+    setStartingEvaluation(true);
+    try {
+      const updated = await api<ProjetoDetalheApi>(`/projetos/${projeto.id}/iniciar-avaliacao`, {
+        method: "POST",
+      });
+      setProjeto(updated);
+      toast.success("Projeto enviado para avaliação.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Não foi possível iniciar a avaliação.");
+    } finally {
+      setStartingEvaluation(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <DashboardHeader label="Detalhe do projeto" title={`Projeto #${params.id}`} />
@@ -101,6 +119,16 @@ export default function ProjetoDetalhePage() {
                   </span>
                   <h1 className="mt-4 font-display text-3xl sm:text-4xl leading-tight">{projeto.nome || "Projeto sem nome"}</h1>
                   <p className="mt-2 text-muted-foreground max-w-3xl">{projeto.resumo || "Resumo não informado."}</p>
+                  {canStartEvaluation && (
+                    <button
+                      type="button"
+                      onClick={iniciarAvaliacao}
+                      disabled={startingEvaluation}
+                      className="mt-5 inline-flex rounded-full bg-gradient-hero text-primary-foreground px-5 py-2.5 text-sm font-medium shadow-glow hover:shadow-elevated transition-all disabled:opacity-60"
+                    >
+                      {startingEvaluation ? "Enviando..." : "Enviar para avaliação"}
+                    </button>
+                  )}
                 </div>
                 <div className="grid sm:grid-cols-2 gap-3 lg:w-[28rem]">
                   <Info label="Proponente" value={projeto.proponente || "Não informado"} />
