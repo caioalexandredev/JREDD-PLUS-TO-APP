@@ -7,12 +7,12 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import NovoEditalModal from "./NovoEditalModal";
 import Link from "next/link";
 import { mockSubs } from "@/mock/AdminSubmission";
-import HeaderAdmin from "./HeaderAdmin";
 import DemonstrationTable from "@/libs/table/DemonstrationTable";
 import Tabs, { TabOption } from "@/libs/tab/Tabs";
 import SubmissaoCard from "./SubmissaoCard";
 import { api } from "@/libs/api";
 import { toast } from "sonner";
+import NavBarInterna from "@/libs/nav/NavBarInterna";
 
 const TABS: TabOption[] = [
   { value: "editais", label: "Editais publicados" },
@@ -102,7 +102,7 @@ export default function Admin() {
 
   return (
     <div className="min-h-screen bg-background">
-      <HeaderAdmin />
+      <NavBarInterna title={'SEMARH-TO · Coordenação JREDD+'} subtitle={'Administração'} />
 
       <div className="mx-auto max-w-7xl px-6 py-12">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">

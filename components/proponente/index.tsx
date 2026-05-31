@@ -4,13 +4,13 @@ import { AnimatePresence } from "motion/react";
 import { useEffect, useMemo, useState } from "react";
 import { mockSubmissions } from "@/mock/SubmissaoData";
 import { SubStatus } from "@/model/edital/TSubStatus";
-import HeaderProponente from "./HeaderProponente";
 import HeroProponente from "./HeroProponente";
 import DemonstrationTable, { IDemonstrationTableValues } from "@/libs/table/DemonstrationTable";
 import EditalCard from "./EditalCard";
 import EditalSubmissionModal from "./EditalSubmissionModal";
 import { api, uploadDocumento } from "@/libs/api";
 import { toast } from "sonner";
+import NavBarInterna from "@/libs/nav/NavBarInterna";
 
 type Projeto = {
   id: number;
@@ -72,7 +72,8 @@ export default function Proponente() {
 
   return (
     <div className="min-h-screen bg-background">
-      <HeaderProponente />
+      <NavBarInterna title={'Instituto Verde Tocantins'} subtitle={'Área do proponente'} />
+
       <div className="mx-auto max-w-7xl px-6 py-12">
         <HeroProponente setOpen={setOpen} />
         <DemonstrationTable values={stats} cols={4} light />

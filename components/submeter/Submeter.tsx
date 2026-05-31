@@ -1,8 +1,5 @@
 "use client";
 
-import pages from "@/config/pages.consts";
-import { editais } from "@/mock/EditalData";
-import Link from "next/link";
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import Step1 from "./steps/Step1";
@@ -11,6 +8,7 @@ import Step3 from "./steps/Step3";
 import Step4 from "./steps/Step4";
 import Step5 from "./steps/Step5";
 import Step6 from "./steps/Step6";
+import NavBarInterna from "@/libs/nav/NavBarInterna";
 
 const steps = [
   { n: "01", t: "Identificação do proponente", s: "Dados da instituição e representante legal" },
@@ -22,9 +20,6 @@ const steps = [
 ] as const;
 
 export default function Submeter(): React.ReactNode {
-  const edital = editais[0];
-  const projectTitle = edital?.title ?? "Recuperação de nascentes — Bacia do Tocantins";
-  const editalCode = edital?.id ?? "TO-2026-018";
   const [current, setCurrent] = useState(0);
   const [completed, setCompleted] = useState<Set<number>>(new Set([0, 1]));
 
@@ -42,35 +37,7 @@ export default function Submeter(): React.ReactNode {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-40 glass border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 h-16 flex items-center gap-4">
-          <Link href={pages.painel.path} className="flex items-center gap-2 shrink-0">
-            <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-gradient-hero">
-              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-primary-foreground" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 2v20M2 12h20" strokeLinecap="round" /></svg>
-            </span>
-            <span className="font-display text-xl tracking-tight hidden sm:inline">JREDD+</span>
-          </Link>
-          <div className="h-6 w-px bg-border hidden sm:block" />
-          <div className="hidden sm:block min-w-0">
-            <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">Edital {editalCode} · Rascunho</div>
-            <div className="text-sm font-medium leading-tight truncate max-w-105">{projectTitle}</div>
-          </div>
-
-          <div className="ml-auto flex items-center gap-3">
-            <div className="hidden md:flex items-center gap-2 text-xs">
-              <span className="h-1.5 w-1.5 rounded-full bg-leaf animate-pulse" />
-              <span className="text-muted-foreground">Auto-salvo há 12s</span>
-            </div>
-            <button className="text-sm px-3 py-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors hidden sm:inline-flex">
-              Salvar rascunho
-            </button>
-            <Link href={pages.logout.path} className="text-sm px-3 py-2 rounded-full border border-border hover:bg-secondary transition-colors">Sair</Link>
-          </div>
-        </div>
-        <div className="h-0.5 bg-border/50">
-          <motion.div className="h-full bg-gradient-hero" initial={false} animate={{ width: `${progress}%` }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }} />
-        </div>
-      </header>
+      <NavBarInterna title={'Instituto Verde Tocantins'} subtitle={'Área do proponente'} />
 
       <div className="mx-auto max-w-7xl px-6 py-10 grid lg:grid-cols-12 gap-10">
         <aside className="lg:col-span-3">
