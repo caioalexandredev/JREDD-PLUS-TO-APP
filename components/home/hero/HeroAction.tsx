@@ -12,7 +12,7 @@ export default function HeroAction() {
         className="mt-10 flex flex-wrap items-center justify-center gap-3"
       >
         <Link
-          href={pages.submeter.path}
+          href={pages.auth.path}
           className="group inline-flex items-center gap-2 rounded-full bg-gradient-hero text-primary-foreground px-6 py-3.5 text-sm font-medium shadow-glow hover:shadow-elevated transition-all hover:-translate-y-0.5"
         >
           Iniciar submissão guiada

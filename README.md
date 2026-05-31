@@ -1,12 +1,12 @@
 <div align="center">
 
 ```
-     ██╗██████╗ ███████╗██████╗ ██████╗       ██╗
-     ██║██╔══██╗██╔════╝██╔══██╗██╔══██╗     ██╔╝
-     ██║██████╔╝█████╗  ██║  ██║██║  ██║    ██╔╝ 
-██   ██║██╔══██╗██╔══╝  ██║  ██║██║  ██║   ██╔╝  
-╚█████╔╝██║  ██║███████╗██████╔╝██████╔╝  ██╔╝   
- ╚════╝ ╚═╝  ╚═╝╚══════╝╚═════╝ ╚═════╝  ╚═╝    
+███████╗ ██████╗ ██████╗ ██╗   ██╗███████╗██████╗ ████████╗██╗ ██████╗███████╗
+██╔════╝██╔════╝██╔═══██╗██║   ██║██╔════╝██╔══██╗╚══██╔══╝██║██╔════╝██╔════╝
+█████╗  ██║     ██║   ██║██║   ██║█████╗  ██████╔╝   ██║   ██║██║     █████╗  
+██╔══╝  ██║     ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗   ██║   ██║██║     ██╔══╝  
+███████╗╚██████╗╚██████╔╝ ╚████╔╝ ███████╗██║  ██║   ██║   ██║╚██████╗███████╗
+╚══════╝ ╚═════╝ ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝╚══════╝
     ████████╗ ██████╗  ██████╗ █████╗ ███╗  ██╗████████╗██╗███╗  ██╗███████╗
        ██╔══╝██╔═══██╗██╔════╝██╔══██╗████╗ ██║╚══██╔══╝██║████╗ ██║██╔════╝
        ██║   ██║   ██║██║     ███████║██╔██╗██║   ██║   ██║██╔██╗██║███████╗
@@ -15,7 +15,7 @@
        ╚═╝    ╚═════╝  ╚═════╝╚═╝  ╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝╚═╝  ╚══╝╚══════╝
 ```
 
-# 🌿 JREDD+ Tocantins
+# 🌿 EcoVertice Tocantins
 
 **Plataforma integrada de rastreabilidade e democratização de créditos de carbono**
 
@@ -32,7 +32,7 @@
 
 ## 🌱 Sobre o Projeto
 
-A **JREDD+ Tocantins** é uma solução tecnológica integrada de ponta a ponta criada para **democratizar o acesso** e garantir **total rastreabilidade** aos fundos de créditos de carbono. Estruturada funcionalmente em **cinco módulos principais**, a plataforma unifica a jornada do recurso ambiental — do registro ao beneficiário final — com transparência, segurança e acessibilidade.
+A **EcoVertice Tocantins** é uma solução tecnológica integrada de ponta a ponta criada para **democratizar o acesso** e garantir **total gestão** aos processos que geram fundos de créditos de carbono. Estruturada funcionalmente em **cinco módulos principais**, a plataforma unifica a jornada do recurso ambiental do registro ao beneficiário final com transparência, segurança e acessibilidade.
 
 > 🌳 *Tecnologia a serviço da floresta. Inovação a serviço das pessoas.*
 
@@ -90,8 +90,8 @@ Antes de começar, certifique-se de ter instalado:
 **1. Clone o repositório**
 
 ```bash
-git clone https://github.com/seu-usuario/jredd-plus-to-app.git
-cd jredd-plus-to-app
+git clone https://github.com/caioalexandredev/JREDD-PLUS-TO-APP.git
+cd JREDD-PLUS-TO-APP
 ```
 
 **2. Instale as dependências**
@@ -148,43 +148,38 @@ http://localhost:3000
 
 ### 🏛️ Módulos da Plataforma
 
-- [ ] **Módulo 1** — Cadastro e autenticação de usuários (beneficiários, gestores, auditores)
-- [ ] **Módulo 2** — Registro e validação de projetos REDD+
-- [ ] **Módulo 3** — Rastreabilidade do ciclo de vida dos créditos de carbono
-- [ ] **Módulo 4** — Distribuição transparente de fundos aos beneficiários
-- [ ] **Módulo 5** — Painel de monitoramento, relatórios e auditoria
+- [x] **Módulo 1** — Cadastro e autenticação de usuários (beneficiários, gestores, auditores)
+- [x] **Módulo 2** — Registro e validação de projetos REDD+
+- [x] **Módulo 3** — Rastreabilidade do ciclo de vida dos créditos de carbono
+- [x] **Módulo 4** — Distribuição transparente de fundos aos beneficiários
+- [x] **Módulo 5** — Painel de monitoramento, relatórios e auditoria
 
 ### ⚙️ Infraestrutura & Qualidade
 
 - [ ] Configuração de CI/CD (GitHub Actions ou similar)
 - [ ] Testes unitários com Jest / Testing Library
-- [ ] Testes E2E com Playwright ou Cypress
-- [ ] Documentação da API/endpoints
-- [ ] Acessibilidade (WCAG 2.1 AA)
-- [ ] Responsividade mobile-first
+- [x] Documentação da API/endpoints
+- [x] Responsividade mobile-first
 
 ### 🌐 Funcionalidades Gerais
 
-- [ ] Landing page institucional
-- [ ] Dashboard do beneficiário
-- [ ] Dashboard do gestor
-- [ ] Sistema de notificações em tempo real
-- [ ] Exportação de relatórios em PDF/CSV
-- [ ] Suporte a múltiplos idiomas (i18n)
+- [x] Landing page institucional
+- [x] Dashboard do beneficiário
+- [x] Dashboard do gestor
 
 ### 🔐 Segurança
 
-- [ ] Autenticação JWT / OAuth2
-- [ ] Controle de papéis e permissões (RBAC)
-- [ ] Auditoria de logs de ações críticas
-- [ ] Proteção contra CSRF e XSS
+- [x] Autenticação JWT / OAuth2
+- [x] Controle de papéis e permissões (RBAC)
+- [x] Auditoria de logs de ações críticas
+- [x] Proteção contra CSRF e XSS
 
 ---
 
 ## 📁 Estrutura do Projeto
 
 ```
-jredd-plus-to-app/
+ecovertice-tocantins/
 ├── 📂 app/                  # App Router do Next.js
 │   ├── layout.tsx
 │   └── page.tsx
@@ -216,7 +211,7 @@ Contribuições são muito bem-vindas! Para contribuir:
 
 ## 📄 Licença
 
-Este projeto está sob licença privada. Todos os direitos reservados © JREDD+ Tocantins.
+Este projeto está sob licença privada. Todos os direitos reservados © EcoVertice Tocantins.
 
 ---
 
@@ -226,7 +221,7 @@ Este projeto está sob licença privada. Todos os direitos reservados © JREDD+ 
 >
 > O uso de IA foi supervisionado pela equipe de desenvolvimento, que manteve a responsabilidade pelas decisões arquiteturais, revisão crítica do código gerado e adequação ao contexto do projeto.
 >
-> A adoção de IA no processo de desenvolvimento tem como objetivo acelerar a entrega de valor, mantendo os padrões de qualidade, segurança e missão da plataforma JREDD+ Tocantins.
+> A adoção de IA no processo de desenvolvimento tem como objetivo acelerar a entrega de valor, mantendo os padrões de qualidade, segurança e missão da plataforma EcoVertice Tocantins.
 
 ---
 
