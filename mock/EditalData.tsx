@@ -19,6 +19,7 @@ export type Edital = {
   eligibility: string[];
   timeline: { phase: string; date: string }[];
   documents: { name: string; size: string }[];
+  criterios?: { nome: string; descricao: string; ordem: number }[];
   contact: { name: string; email: string; phone: string };
 };
 

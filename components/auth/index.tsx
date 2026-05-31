@@ -8,10 +8,13 @@ import Button from "@/libs/button/Button";
 import AsideLoginCadastro from "./AsideLoginCadastro";
 import HeaderLoginCadastro from "./HeaderLoginCadastro";
 import { toast } from "sonner";
+import { api, login, routeForProfile } from "@/libs/api";
+import { useRouter } from "next/navigation";
 
 export default function LoginCadastro() {
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handle: SubmitEventHandler<HTMLFormElement> = async (e) => {
     try {
@@ -19,10 +22,22 @@ export default function LoginCadastro() {
       setLoading(true);
 
       if (mode === "signin") {
+        const form = new FormData(e.currentTarget);
+        const user = await login(String(form.get("email")), String(form.get("password")));
         toast.success("Login realizado com sucesso!", {
           description: "Redirecionando para o seu painel...",
         });
+        router.push(routeForProfile(user.profile));
       } else {
+        const form = new FormData(e.currentTarget);
+        await api("/users", {
+          method: "POST",
+          body: JSON.stringify({
+            nome: String(form.get("nome")),
+            email: String(form.get("email")),
+            password: String(form.get("password")),
+          }),
+        });
         toast.success("Conta criada com sucesso!", {
           description: "Sua conta foi criada com sucesso, realize o login!.",
         });
@@ -30,8 +45,8 @@ export default function LoginCadastro() {
       }
     } catch (error) {
       console.error(error);
-      toast.error("Houve um erro ao criar sua conta!", {
-        description: "Por favor! Tente mais tarde!.",
+      toast.error("Nao foi possivel autenticar.", {
+        description: "Confira seus dados e tente novamente.",
       });
     } finally {
       setLoading(false);
@@ -52,7 +67,7 @@ export default function LoginCadastro() {
           className="m-auto w-full max-w-md py-12"
         >
           <motion.div layout className="text-xs uppercase tracking-[0.22em] text-muted-foreground mb-3 font-mono">
-            <span className="text-leaf">●</span> {mode === "signin" ? "Acesso à plataforma" : "Novo cadastro"}
+            <span className="text-leaf">●</span> {mode === "signin" ? "Acesso a plataforma" : "Novo cadastro"}
           </motion.div>
 
           <motion.h2 layout className="font-display text-4xl sm:text-5xl tracking-[-0.02em] leading-[1.02]">
@@ -60,33 +75,33 @@ export default function LoginCadastro() {
           </motion.h2>
 
           <motion.p layout className="mt-3 text-sm text-muted-foreground">
-            {mode === "signin" ? "Use seu e-mail institucional ou um dos provedores oficiais." : "Após o cadastro você terá acesso à submissão guiada e ao painel da sua organização."}
+            {mode === "signin" ? "Use seu e-mail institucional ou um dos provedores oficiais." : "Apos o cadastro voce tera acesso a submissao guiada e ao painel da sua organizacao."}
           </motion.p>
 
           <motion.div layout className="my-6 flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
             <div className="h-px flex-1 bg-border" />
-            Área de Login
+            Area de Login
             <div className="h-px flex-1 bg-border" />
           </motion.div>
 
           <form onSubmit={handle} className="space-y-4">
             {mode === "signup" && (
               <Field label="Nome Completo">
-                <Input className="auth-input" placeholder="Nome Sobrenome" required />
+                <Input name="nome" className="auth-input" placeholder="Nome Sobrenome" required />
               </Field>
             )}
 
             <Field label="E-mail">
-              <Input type="email" className="auth-input" placeholder="voce@instituicao.org.br" required />
+              <Input name="email" type="email" className="auth-input" placeholder="voce@instituicao.org.br" required />
             </Field>
             <Field label="Senha" hint={mode === "signin" ? <button type="button" className="text-xs text-primary hover:underline">Esqueci minha senha</button> : undefined}>
-              <Input type="password" className="auth-input" placeholder="••••••••" required minLength={8} />
+              <Input name="password" type="password" className="auth-input" placeholder="••••••••" required minLength={mode === "signin" ? 3 : 8} />
             </Field>
 
             {mode === "signup" && (
               <label className="flex items-start gap-2.5 text-xs text-muted-foreground pt-1">
                 <input type="checkbox" required className="mt-0.5 h-4 w-4 rounded border-border accent-leaf" />
-                <span>Li e concordo com os <a href="#" className="text-foreground underline">Termos de Uso</a> e a <a href="#" className="text-foreground underline">Política LGPD</a> do Programa JREDD+.</span>
+                <span>Li e concordo com os <a href="#" className="text-foreground underline">Termos de Uso</a> e a <a href="#" className="text-foreground underline">Politica LGPD</a> do Programa JREDD+.</span>
               </label>
             )}
             <Button
@@ -96,7 +111,7 @@ export default function LoginCadastro() {
           </form>
 
           <p className="mt-8 text-sm text-center text-muted-foreground">
-            {mode === "signin" ? "Ainda não tem conta?" : "Já possui acesso?"}{" "}
+            {mode === "signin" ? "Ainda nao tem conta?" : "Ja possui acesso?"}{" "}
             <button onClick={() => setMode(mode === "signin" ? "signup" : "signin")} className="text-foreground font-medium hover:text-primary transition-colors">
               {mode === "signin" ? "Cadastre-se na plataforma" : "Entrar"}
             </button>
@@ -104,7 +119,7 @@ export default function LoginCadastro() {
         </motion.div>
 
         <footer className="text-[10px] text-muted-foreground font-mono uppercase tracking-[0.2em] text-center">
-          Conexão segura · TLS 1.3 · LGPD compliant
+          Conexao segura · TLS 1.3 · LGPD compliant
         </footer>
       </main>
     </div>

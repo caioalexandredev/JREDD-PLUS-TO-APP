@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence } from "motion/react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { mockSubmissions } from "@/mock/SubmissaoData";
 import { SubStatus } from "@/model/edital/TSubStatus";
 import HeaderProponente from "./HeaderProponente";
@@ -9,6 +9,16 @@ import HeroProponente from "./HeroProponente";
 import DemonstrationTable, { IDemonstrationTableValues } from "@/libs/table/DemonstrationTable";
 import EditalCard from "./EditalCard";
 import EditalSubmissionModal from "./EditalSubmissionModal";
+import { api, uploadDocumento } from "@/libs/api";
+import { toast } from "sonner";
+
+type Projeto = {
+  id: number;
+  nome: string;
+  auditor: string;
+  atividades: { id: number; nome: string; status: string; inicio?: string; fim?: string }[];
+  evidencias: { id: number; descricao: string; status: string; atividade?: string }[];
+};
 
 const stats: IDemonstrationTableValues[] = [
   { l: "Submissões", v: '100' },
@@ -21,6 +31,15 @@ export default function Proponente() {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<"Todos" | SubStatus>("Todos");
   const [open, setOpen] = useState(false);
+  const [projetos, setProjetos] = useState<Projeto[]>([]);
+  const [evidenceText, setEvidenceText] = useState<Record<number, string>>({});
+  const [evidenceFile, setEvidenceFile] = useState<Record<number, File | null>>({});
+
+  useEffect(() => {
+    api<Projeto[]>("/proponente/projetos")
+      .then(setProjetos)
+      .catch(() => setProjetos([]));
+  }, []);
 
   const filtered = useMemo(() => {
     return mockSubmissions.filter((s) => {
@@ -29,6 +48,27 @@ export default function Proponente() {
       return true;
     });
   }, [query, filter]);
+
+  const enviarEvidencia = async (projetoId: number) => {
+    const file = evidenceFile[projetoId];
+    if (!file || !evidenceText[projetoId]) {
+      toast.error("Informe uma foto e uma descricao.");
+      return;
+    }
+    try {
+      const documento = await uploadDocumento(file, "EVIDENCIA");
+      await api(`/projetos/${projetoId}/evidencias`, {
+        method: "POST",
+        body: JSON.stringify({ fotoDocumentoId: documento.id, descricao: evidenceText[projetoId] }),
+      });
+      toast.success("Evidencia enviada para validacao.");
+      setProjetos(await api<Projeto[]>("/proponente/projetos"));
+      setEvidenceText((prev) => ({ ...prev, [projetoId]: "" }));
+      setEvidenceFile((prev) => ({ ...prev, [projetoId]: null }));
+    } catch {
+      toast.error("Nao foi possivel enviar a evidencia.");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -68,6 +108,48 @@ export default function Proponente() {
             <EditalCard key={s.id} idx={idx} s={s} />
           ))}
         </div>
+
+        {projetos.length > 0 && (
+          <section className="mt-12">
+            <div className="mb-5">
+              <div className="text-xs uppercase tracking-[0.22em] text-muted-foreground font-mono"><span className="text-leaf">●</span> Acompanhamento</div>
+              <h2 className="mt-2 font-display text-3xl">Projetos em execucao</h2>
+            </div>
+            <div className="space-y-4">
+              {projetos.map((projeto) => (
+                <article key={projeto.id} className="bg-card border border-border rounded-2xl p-5">
+                  <div className="flex flex-col lg:flex-row gap-6">
+                    <div className="flex-1">
+                      <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">Auditor: {projeto.auditor}</div>
+                      <h3 className="mt-2 font-display text-2xl">{projeto.nome}</h3>
+                      <div className="mt-4 grid md:grid-cols-2 gap-2">
+                        {projeto.atividades.map((atividade) => (
+                          <div key={atividade.id} className="rounded-xl bg-secondary/50 border border-border p-3">
+                            <div className="text-sm font-medium">{atividade.nome}</div>
+                            <div className="text-xs text-muted-foreground mt-1">{atividade.status}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="lg:w-96">
+                      <div className="text-sm font-medium mb-2">Nova evidencia</div>
+                      <input type="file" accept="image/*" onChange={(e) => setEvidenceFile((prev) => ({ ...prev, [projeto.id]: e.target.files?.[0] ?? null }))} className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm" />
+                      <textarea value={evidenceText[projeto.id] ?? ""} onChange={(e) => setEvidenceText((prev) => ({ ...prev, [projeto.id]: e.target.value }))} placeholder="Descreva a evidencia enviada" className="mt-3 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm min-h-24" />
+                      <button onClick={() => enviarEvidencia(projeto.id)} className="mt-3 w-full rounded-full bg-gradient-hero text-primary-foreground px-4 py-2.5 text-sm font-medium">Enviar evidencia</button>
+                    </div>
+                  </div>
+                  {projeto.evidencias.length > 0 && (
+                    <div className="mt-5 pt-4 border-t border-border flex flex-wrap gap-2">
+                      {projeto.evidencias.map((evidencia) => (
+                        <span key={evidencia.id} className="text-xs px-3 py-1 rounded-full bg-secondary text-muted-foreground">{evidencia.status} · {evidencia.descricao}</span>
+                      ))}
+                    </div>
+                  )}
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
 
       <AnimatePresence>

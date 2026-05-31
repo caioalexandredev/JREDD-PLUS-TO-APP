@@ -17,6 +17,12 @@ const pages = {
     painel: {
         path: '/painel'
     },
+    avaliador: {
+        path: '/avaliador'
+    },
+    auditor: {
+        path: '/auditor'
+    },
 }
 
 export default pages;
