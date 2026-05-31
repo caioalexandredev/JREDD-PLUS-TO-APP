@@ -44,10 +44,11 @@ export default function LoginCadastro() {
         });
         setMode("signin");
       }
-    } catch (error) {
-      console.error(error);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Erro desconhecido";
+
       toast.error("Nao foi possivel autenticar.", {
-        description: "Confira seus dados e tente novamente.",
+        description: errorMessage,
       });
     } finally {
       setLoading(false);

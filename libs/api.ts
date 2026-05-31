@@ -71,7 +71,7 @@ export async function api<T>(path: string, options: ApiOptions = {}): Promise<T>
     redirectUnauthorized(response.status === 401 ? "session" : "role");
     throw new Error("Acesso nao autorizado.");
   }
-  console.log(response);
+  
   if (!response.ok) {
     const message = await response.text();
     throw new Error(message || "Nao foi possivel concluir a operacao.");
