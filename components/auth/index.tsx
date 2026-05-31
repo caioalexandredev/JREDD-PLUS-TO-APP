@@ -1,40 +1,36 @@
 "use client";
 
-import { SubmitEventHandler, useState } from "react";
+import { useState } from "react";
 import { motion } from "motion/react";
 import Field from "@/libs/fields/Field";
 import { Input } from "@/libs/fields/Input";
 import Button from "@/libs/button/Button";
 import AsideLoginCadastro from "./AsideLoginCadastro";
 import HeaderLoginCadastro from "./HeaderLoginCadastro";
-import { toast } from "sonner";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function LoginCadastro() {
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [loading, setLoading] = useState(false);
+  const { login, signup, isLoggingIn, isSigningUp } = useAuth({
+    onSignupSuccess: () => setMode("signin"),
+  });
 
-  const handle: SubmitEventHandler<HTMLFormElement> = async (e) => {
-    try {
-      e.preventDefault();
-      setLoading(true);
+  const handle = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
 
-      if (mode === "signin") {
-        toast.success("Login realizado com sucesso!", {
-          description: "Redirecionando para o seu painel...",
-        });
-      } else {
-        toast.success("Conta criada com sucesso!", {
-          description: "Sua conta foi criada com sucesso, realize o login!.",
-        });
-        setMode("signin");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Houve um erro ao criar sua conta!", {
-        description: "Por favor! Tente mais tarde!.",
+    if (mode === "signin") {
+      login({
+        email: form.get("email") as string,
+        password: form.get("password") as string,
       });
-    } finally {
-      setLoading(false);
+    } else {
+      signup({
+        nome: form.get("nome") as string,
+        email: form.get("email") as string,
+        password: form.get("password") as string
+      });
     }
   };
 
