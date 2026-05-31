@@ -17,6 +17,7 @@ import {
   projetoStatusColor,
   projetoStatusLabel,
 } from "@/libs/jredd-api-types";
+import NavBarInterna from "@/libs/nav/NavBarInterna";
 
 const RealMap = dynamic(() => import("@/components/maps/RealMap"), { ssr: false });
 
@@ -205,7 +206,7 @@ export default function Avaliador() {
 
   return (
     <div className="min-h-screen bg-background">
-      <DashboardHeader label="Area do avaliador" title={`Avaliacao Tecnica ${info.name}`} />
+      <NavBarInterna title="Area do avaliador" subtitle={`Avaliacao Tecnica ${info.name}`} />
       <main className="mx-auto max-w-7xl px-6 py-12">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
           <div>
