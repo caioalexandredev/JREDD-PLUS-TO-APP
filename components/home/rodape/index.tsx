@@ -26,7 +26,6 @@ export default function Rodape() {
               { label: "Sobre o REDD+", href: "/sobre" },
               { label: "Marco legal", href: "/marco-legal" },
               { label: "LGPD", href: "/lgpd" },
-              { label: "Acessibilidade", href: "/acessibilidade" },
               { label: "Contato", href: "/contato" }
             ]} 
           />
