@@ -8,9 +8,9 @@ export default function PrivacidadePage() {
       <Navbar />
       <main className="mx-auto max-w-4xl px-6 pt-32 pb-16">
         <div className="text-xs uppercase tracking-[0.22em] text-muted-foreground font-mono">Privacidade</div>
-        <h1 className="mt-3 font-display text-5xl leading-[1.02]">Politica de privacidade</h1>
+        <h1 className="mt-3 font-display text-5xl leading-[1.02]">Política de privacidade</h1>
         <p className="mt-5 text-muted-foreground leading-relaxed">
-          As informacoes submetidas na plataforma sao usadas para operacao dos editais, analise tecnica, acompanhamento de evidencias e prestacao de contas. Dados sensiveis devem ser acessados somente por usuarios autorizados.
+          As informações submetidas na plataforma são usadas para operação dos editais, análise técnica, acompanhamento de evidências e prestação de contas. Dados sensíveis devem ser acessados somente por usuários autorizados.
         </p>
         <section className="mt-8 space-y-3">
           {["Coletamos somente dados necessarios ao fluxo do edital.", "Protegemos rotas internas por perfil de usuario.", "Solicitacoes de revisao podem ser encaminhadas ao administrador da plataforma."].map((item) => (

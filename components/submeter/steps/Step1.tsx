@@ -18,9 +18,9 @@ export default function Step1({ value, naturezas, onChange }: Props) {
 
   return (
     <>
-      <Section title="Dados da instituicao" hint="Razao social, CNPJ e perfil juridico">
+      <Section title="Dados da instituição" hint="Razão social, CNPJ e perfil jurídico">
         <Grid>
-          <Field label="Razao social" span={8} required>
+          <Field label="Razão social" span={8} required>
             <Input value={value.razaoSocial} onChange={(e) => set("razaoSocial", e.target.value)} placeholder="Instituto Verde Tocantins" />
           </Field>
           <Field label="Nome fantasia" span={4}>
@@ -32,7 +32,7 @@ export default function Step1({ value, naturezas, onChange }: Props) {
           <Field label="Data de fundacao" span={4}>
             <Input value={value.dataFundacao} onChange={(e) => set("dataFundacao", e.target.value)} type="date" />
           </Field>
-          <Field label="Natureza juridica" span={4} required>
+          <Field label="Natureza jurídica" span={4} required>
             <Select value={value.idNaturezaJuridica} onChange={(e) => set("idNaturezaJuridica", e.target.value)}>
               <option value="">Selecione</option>
               {naturezas.map((natureza) => (
@@ -40,8 +40,8 @@ export default function Step1({ value, naturezas, onChange }: Props) {
               ))}
             </Select>
           </Field>
-          <Field label="Area de atuacao" span={6}>
-            <Input value={value.areaAtuacao} onChange={(e) => set("areaAtuacao", e.target.value)} placeholder="Conservacao ambiental, agroecologia" />
+          <Field label="Área de atuação" span={6}>
+            <Input value={value.areaAtuacao} onChange={(e) => set("areaAtuacao", e.target.value)} placeholder="Conservação ambiental, agroecologia" />
           </Field>
           <Field label="Site" span={6}>
             <Input value={value.site} onChange={(e) => set("site", e.target.value)} placeholder="https://" />

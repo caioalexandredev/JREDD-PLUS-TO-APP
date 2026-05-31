@@ -17,12 +17,12 @@ export default function UnauthorizedContent() {
           Acesso restrito
         </div>
         <h1 className="mt-6 font-display text-4xl sm:text-6xl leading-[1.02]">
-          Voce nao tem permissao para acessar esta area.
+          Você não tem permissão para acessar esta área.
         </h1>
         <p className="mt-4 text-muted-foreground max-w-2xl leading-relaxed">
           {isSession
-            ? "Sua sessao expirou ou nao foi reconhecida. Entre novamente para continuar usando os modulos protegidos da plataforma."
-            : `O perfil da sua conta nao possui autorizacao para este painel. Cada area do ${info.name} e liberada conforme o papel do usuario.`}
+            ? "Sua sessão expirou ou não foi reconhecida. Entre novamente para continuar usando os módulos protegidos da plataforma."
+            : `O perfil da sua conta não possui autorização para este painel. Cada área do ${info.name} é liberada conforme o papel do usuário.`}
         </p>
 
         <div className="mt-8 flex flex-col sm:flex-row gap-3">

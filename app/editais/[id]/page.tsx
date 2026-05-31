@@ -31,7 +31,7 @@ export default function EditalPublicoDetalhePage() {
       setEdital(response);
       setError("");
     } catch {
-      setError("Nao foi possivel carregar os detalhes do edital.");
+      setError("Não foi possível carregar os detalhes do edital.");
       setEdital(null);
     } finally {
       setLoading(false);
@@ -69,7 +69,7 @@ export default function EditalPublicoDetalhePage() {
                 <div className="max-w-3xl">
                   <div className="text-xs uppercase tracking-[0.22em] text-muted-foreground font-mono">Edital #{edital.id}</div>
                   <h1 className="mt-3 font-display text-4xl sm:text-5xl leading-[1.02]">{edital.titulo}</h1>
-                  <p className="mt-4 text-muted-foreground leading-relaxed">{edital.resumo || "Resumo nao informado."}</p>
+                  <p className="mt-4 text-muted-foreground leading-relaxed">{edital.resumo || "Resumo não informado."}</p>
                 </div>
                 <span className={`w-fit text-[10px] uppercase tracking-[0.16em] font-mono px-3 py-1 rounded-full border ${editalStatusColor(edital.status)}`}>
                   {editalStatusLabel(edital.status)}
@@ -77,13 +77,13 @@ export default function EditalPublicoDetalhePage() {
               </div>
 
               <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border rounded-2xl overflow-hidden">
-                <Info label="Orgao proponente" value={edital.orgaoProponente || "Nao informado"} />
-                <Info label="Frente de atuacao" value={edital.frenteAtuacao || "Nao informada"} />
-                <Info label="Regiao imediata" value={edital.regiaoImediata || "Nao informada"} />
+                <Info label="Órgão proponente" value={edital.orgaoProponente || "Não informado"} />
+                <Info label="Frente de atuação" value={edital.frenteAtuacao || "Não informada"} />
+                <Info label="Região imediata" value={edital.regiaoImediata || "Não informada"} />
                 <Info label="Faixa de valor" value={formatCurrencyRange(edital.valorMinimo, edital.valorMaximo)} />
-                <Info label="Inicio das inscricoes" value={formatDate(edital.inicioRecebimentoPropostas)} />
-                <Info label="Fim das inscricoes" value={formatDate(edital.fimRecebimentoPropostas)} />
-                <Info label="Estado" value={edital.estado || "Nao informado"} />
+                <Info label="Início das inscrições" value={formatDate(edital.inicioRecebimentoPropostas)} />
+                <Info label="Fim das inscrições" value={formatDate(edital.fimRecebimentoPropostas)} />
+                <Info label="Estado" value={edital.estado || "Não informado"} />
                 <Info label="Atualizado em" value={formatDate(edital.atualizadoEm?.slice(0, 10))} />
               </div>
 
@@ -98,16 +98,16 @@ export default function EditalPublicoDetalhePage() {
             <div className="grid lg:grid-cols-3 gap-6">
               <section className="lg:col-span-2 bg-card border border-border rounded-2xl overflow-hidden">
                 <div className="px-6 py-5 border-b border-border">
-                  <div className="text-[10px] uppercase tracking-[0.2em] font-mono text-muted-foreground">Criterios de avaliacao</div>
-                  <div className="mt-1 text-sm text-muted-foreground">Criterios que serao usados na avaliacao das propostas.</div>
+                  <div className="text-[10px] uppercase tracking-[0.2em] font-mono text-muted-foreground">Critérios de avaliação</div>
+                  <div className="mt-1 text-sm text-muted-foreground">Critérios que serão usados na avaliação das propostas.</div>
                 </div>
                 <div className="p-6 grid md:grid-cols-2 gap-3">
-                  {criterios.length === 0 && <div className="md:col-span-2 rounded-2xl border border-dashed border-border py-12 text-center text-muted-foreground">Nenhum criterio cadastrado.</div>}
+                  {criterios.length === 0 && <div className="md:col-span-2 rounded-2xl border border-dashed border-border py-12 text-center text-muted-foreground">Nenhum critério cadastrado.</div>}
                   {criterios.map((criterio, index) => (
                     <article key={criterio.id ?? `${criterio.nome}-${index}`} className="rounded-2xl border border-border bg-secondary/30 p-4">
                       <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">Ordem {criterio.ordem ?? index + 1}</div>
                       <h2 className="mt-2 font-display text-xl">{criterio.nome}</h2>
-                      <p className="mt-2 text-sm text-muted-foreground">{criterio.descricao || "Sem descricao."}</p>
+                      <p className="mt-2 text-sm text-muted-foreground">{criterio.descricao || "Sem descrição."}</p>
                     </article>
                   ))}
                 </div>
@@ -143,7 +143,7 @@ function DocumentoRow({ documento }: { documento: DocumentoVinculadoApi }) {
     try {
       await downloadDocumento(documento.id, documento.nomeOriginal);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Nao foi possivel baixar o documento.");
+      toast.error(error instanceof Error ? error.message : "Não foi possível baixar o documento.");
     }
   };
 

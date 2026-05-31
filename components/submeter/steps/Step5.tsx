@@ -49,10 +49,10 @@ export default function Step5({ value, onChange }: Props) {
               <Field label="Descricao" span={6}>
                 <Input value={atividade.descricao} onChange={(e) => setAtividade(index, "descricao", e.target.value)} placeholder={`Atividade ${index + 1}`} />
               </Field>
-              <Field label="Responsavel" span={6}>
+              <Field label="Responsável" span={6}>
                 <Input value={atividade.responsavel} onChange={(e) => setAtividade(index, "responsavel", e.target.value)} />
               </Field>
-              <Field label="Inicio" span={3}>
+              <Field label="Início" span={3}>
                 <Input type="date" value={atividade.dataInicio} onChange={(e) => setAtividade(index, "dataInicio", e.target.value)} />
               </Field>
               <Field label="Fim" span={3}>

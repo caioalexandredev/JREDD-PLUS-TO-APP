@@ -7,7 +7,7 @@ import TransparenciaFinanceiro from "./TransparenciaFinanceiro";
 import ProjetosRegiao from "./ProjetosRegiao";
 import RegistroPublico from "./RegistroPublico";
 
-export default function Transparencia() {
+export default function Transparência() {
   
   return (
     <div className="min-h-screen bg-background">

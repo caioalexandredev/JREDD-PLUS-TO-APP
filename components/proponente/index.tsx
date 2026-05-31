@@ -52,7 +52,7 @@ export default function Proponente() {
       setIndicadores(stats);
       setProjetosExecucao(execucao ?? []);
     } catch {
-      toast.error("Nao foi possivel carregar seus projetos.");
+      toast.error("Não foi possível carregar seus projetos.");
       setProjetosResumo([]);
       setProjetosExecucao([]);
       setIndicadores(emptyIndicators);
@@ -66,10 +66,10 @@ export default function Proponente() {
   }, [loadProjetos]);
 
   const stats: IDemonstrationTableValues[] = [
-    { l: "Submissoes", v: String(indicadores.totalSubmissoes ?? 0) },
-    { l: "Em avaliacao", v: String(indicadores.emAvaliacao ?? 0) },
+    { l: "Submissões", v: String(indicadores.totalSubmissoes ?? 0) },
+    { l: "Em avaliação", v: String(indicadores.emAvaliacao ?? 0) },
     { l: "Aprovadas", v: String(indicadores.aprovados ?? 0) },
-    { l: "Em execucao", v: String(indicadores.emExecucao ?? 0) },
+    { l: "Em execução", v: String(indicadores.emExecucao ?? 0) },
   ];
 
   const filtered = useMemo(() => {
@@ -83,7 +83,7 @@ export default function Proponente() {
   const enviarEvidencia = async (projetoId: number) => {
     const file = evidenceFile[projetoId];
     if (!file || !evidenceText[projetoId]) {
-      toast.error("Informe uma foto e uma descricao.");
+      toast.error("Informe uma foto e uma descrição.");
       return;
     }
     try {
@@ -92,12 +92,12 @@ export default function Proponente() {
         method: "POST",
         body: JSON.stringify({ fotoDocumentoId: documento.id, descricao: evidenceText[projetoId] }),
       });
-      toast.success("Evidencia enviada para validacao.");
+      toast.success("Evidência enviada para validação.");
       await loadProjetos();
       setEvidenceText((prev) => ({ ...prev, [projetoId]: "" }));
       setEvidenceFile((prev) => ({ ...prev, [projetoId]: null }));
     } catch {
-      toast.error("Nao foi possivel enviar a evidencia.");
+      toast.error("Não foi possível enviar a evidência.");
     }
   };
 
@@ -113,7 +113,7 @@ export default function Proponente() {
           <div>
             <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">Editais abertos</div>
             <h2 className="mt-1 font-display text-2xl">Submeter novo projeto</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Consulte os editais com inscricoes abertas e inicie uma submissao.</p>
+            <p className="mt-1 text-sm text-muted-foreground">Consulte os editais com inscrições abertas e inicie uma submissão.</p>
           </div>
           <button onClick={() => setOpen(true)} className="rounded-full bg-gradient-hero text-primary-foreground px-5 py-2.5 text-sm font-medium">
             Ver editais abertos
@@ -151,7 +151,7 @@ export default function Proponente() {
           )}
           {!loading && filtered.length === 0 && (
             <div className="text-center py-16 border border-dashed border-border rounded-2xl">
-              <div className="text-muted-foreground">Nenhuma submissao encontrada.</div>
+              <div className="text-muted-foreground">Nenhuma submissão encontrada.</div>
             </div>
           )}
           {!loading && filtered.map((projeto, idx) => (
@@ -170,7 +170,7 @@ export default function Proponente() {
                 <article key={projeto.id} className="bg-card border border-border rounded-2xl p-5">
                   <div className="flex flex-col lg:flex-row gap-6">
                     <div className="flex-1">
-                      <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">Auditor: {projeto.auditor || "Nao definido"}</div>
+                      <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">Auditor: {projeto.auditor || "Não definido"}</div>
                       <h3 className="mt-2 font-display text-2xl">{projeto.nome}</h3>
                       <div className="mt-4 grid md:grid-cols-2 gap-2">
                         {(projeto.atividades ?? []).map((atividade) => (
@@ -182,10 +182,10 @@ export default function Proponente() {
                       </div>
                     </div>
                     <div className="lg:w-96">
-                      <div className="text-sm font-medium mb-2">Nova evidencia</div>
+                      <div className="text-sm font-medium mb-2">Nova evidência</div>
                       <input type="file" onChange={(e) => setEvidenceFile((prev) => ({ ...prev, [projeto.id]: e.target.files?.[0] ?? null }))} className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm" />
-                      <textarea value={evidenceText[projeto.id] ?? ""} onChange={(e) => setEvidenceText((prev) => ({ ...prev, [projeto.id]: e.target.value }))} placeholder="Descreva a evidencia enviada" className="mt-3 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm min-h-24" />
-                      <button onClick={() => enviarEvidencia(projeto.id)} className="mt-3 w-full rounded-full bg-gradient-hero text-primary-foreground px-4 py-2.5 text-sm font-medium">Enviar evidencia</button>
+                      <textarea value={evidenceText[projeto.id] ?? ""} onChange={(e) => setEvidenceText((prev) => ({ ...prev, [projeto.id]: e.target.value }))} placeholder="Descreva a evidência enviada" className="mt-3 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm min-h-24" />
+                      <button onClick={() => enviarEvidencia(projeto.id)} className="mt-3 w-full rounded-full bg-gradient-hero text-primary-foreground px-4 py-2.5 text-sm font-medium">Enviar evidência</button>
                     </div>
                   </div>
                   {(projeto.evidencias ?? []).length > 0 && (

@@ -50,13 +50,13 @@ export default function Auditor() {
         setProjetos(data);
         setSelected(data[0] ?? null);
       })
-      .catch(() => toast.error("Nao foi possivel carregar os projetos do auditor."));
+      .catch(() => toast.error("Não foi possível carregar os projetos do auditor."));
   }, []);
 
   const stats = useMemo(() => [
-    { l: "Projetos", v: String(projetos.length), sub: "atribuidos" },
+    { l: "Projetos", v: String(projetos.length), sub: "atribuídos" },
     { l: "Atividades", v: String(selected?.atividades.length ?? 0), sub: "no cronograma" },
-    { l: "Pendentes", v: String(selected?.evidencias.filter((item) => item.status === "PENDENTE").length ?? 0), sub: "evidencias" },
+    { l: "Pendentes", v: String(selected?.evidencias.filter((item) => item.status === "PENDENTE").length ?? 0), sub: "evidências" },
     { l: "Validadas", v: String(selected?.evidencias.filter((item) => item.status === "APROVADA").length ?? 0), sub: "aprovadas" },
   ], [projetos.length, selected]);
 
@@ -70,26 +70,26 @@ export default function Auditor() {
         method: "POST",
         body: JSON.stringify({ status, comentario: comments[evidenciaId] ?? "" }),
       });
-      toast.success(status === "APROVADA" ? "Evidencia aprovada." : "Parecer registrado.");
+      toast.success(status === "APROVADA" ? "Evidência aprovada." : "Parecer registrado.");
       if (selected) {
         const refreshed = await api<Projeto>(`/projetos/${selected.id}`);
         setSelected(refreshed);
         setProjetos((prev) => prev.map((item) => item.id === refreshed.id ? refreshed : item));
       }
     } catch {
-      toast.error("Nao foi possivel validar a evidencia.");
+      toast.error("Não foi possível validar a evidência.");
     }
   };
 
   return (
     <div className="min-h-screen bg-background">
-      <DashboardHeader label="Area do auditor" title="Acompanhamento e evidencias" />
+      <DashboardHeader label="Área do auditor" title="Acompanhamento e evidências" />
       <main className="mx-auto max-w-7xl px-6 py-12">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
             <div className="text-xs uppercase tracking-[0.22em] text-muted-foreground font-mono"><span className="text-leaf">●</span> Auditoria</div>
-            <h1 className="mt-3 font-display text-4xl sm:text-5xl leading-[1.02]">Gestao de <span className="text-gradient italic">impacto</span></h1>
-            <p className="mt-2 text-muted-foreground max-w-xl">Acompanhe o cronograma do projeto vencedor e valide as evidencias enviadas pelo proponente.</p>
+            <h1 className="mt-3 font-display text-4xl sm:text-5xl leading-[1.02]">Gestão de <span className="text-gradient italic">impacto</span></h1>
+            <p className="mt-2 text-muted-foreground max-w-xl">Acompanhe o cronograma do projeto vencedor e valide as evidências enviadas pelo proponente.</p>
           </div>
           <select value={selected?.id ?? ""} onChange={(e) => setSelected(projetos.find((item) => item.id === Number(e.target.value)) ?? null)} className="px-4 py-3 rounded-xl bg-card border border-border text-sm">
             {projetos.map((projeto) => <option key={projeto.id} value={projeto.id}>{projeto.nome}</option>)}
@@ -116,7 +116,7 @@ export default function Auditor() {
                   <div className="font-medium">{atividade.nome}</div>
                   <span className="text-[10px] uppercase tracking-[0.16em] font-mono px-2 py-0.5 rounded-full bg-secondary text-muted-foreground">{atividade.status}</span>
                 </div>
-                <div className="mt-1 text-xs text-muted-foreground">{atividade.inicio ?? "Sem inicio"} · {atividade.fim ?? "Sem fim"}</div>
+                <div className="mt-1 text-xs text-muted-foreground">{atividade.inicio ?? "Sem início"} · {atividade.fim ?? "Sem fim"}</div>
                 {atividade.descricao && <p className="mt-2 text-sm text-foreground/75">{atividade.descricao}</p>}
               </div>
             ))}
@@ -124,7 +124,7 @@ export default function Auditor() {
 
           <section className="lg:col-span-7 space-y-3">
             {selected?.evidencias.length === 0 && (
-              <div className="text-center py-16 border border-dashed border-border rounded-2xl text-muted-foreground">Nenhuma evidencia enviada.</div>
+              <div className="text-center py-16 border border-dashed border-border rounded-2xl text-muted-foreground">Nenhuma evidência enviada.</div>
             )}
             {selected?.evidencias.map((evidencia) => (
               <article key={evidencia.id} className="bg-card border border-border rounded-2xl p-5">

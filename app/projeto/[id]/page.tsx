@@ -37,7 +37,7 @@ export default function ProjetoDetalhePage() {
       setProjeto(response);
       setError("");
     } catch {
-      setError("Nao foi possivel carregar os dados do projeto.");
+      setError("Não foi possível carregar os dados do projeto.");
     } finally {
       setLoading(false);
     }
@@ -49,7 +49,7 @@ export default function ProjetoDetalhePage() {
 
   const enviarEvidencia = async () => {
     if (!projeto || !file || !descricao.trim()) {
-      toast.error("Informe o documento e a descricao da evidencia.");
+      toast.error("Informe o documento e a descrição da evidência.");
       return;
     }
     setSending(true);
@@ -63,13 +63,13 @@ export default function ProjetoDetalhePage() {
           atividadeId: atividadeId ? Number(atividadeId) : null,
         }),
       });
-      toast.success("Evidencia enviada para validacao.");
+      toast.success("Evidência enviada para validação.");
       setDescricao("");
       setAtividadeId("");
       setFile(null);
       await loadProjeto();
     } catch {
-      toast.error("Nao foi possivel enviar a evidencia.");
+      toast.error("Não foi possível enviar a evidência.");
     } finally {
       setSending(false);
     }
@@ -80,7 +80,7 @@ export default function ProjetoDetalhePage() {
     try {
       await downloadDocumento(documentoId);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Nao foi possivel baixar o documento.");
+      toast.error(error instanceof Error ? error.message : "Não foi possível baixar o documento.");
     }
   };
 
@@ -100,12 +100,12 @@ export default function ProjetoDetalhePage() {
                     {projetoStatusLabel(projeto.status)}
                   </span>
                   <h1 className="mt-4 font-display text-3xl sm:text-4xl leading-tight">{projeto.nome || "Projeto sem nome"}</h1>
-                  <p className="mt-2 text-muted-foreground max-w-3xl">{projeto.resumo || "Resumo nao informado."}</p>
+                  <p className="mt-2 text-muted-foreground max-w-3xl">{projeto.resumo || "Resumo não informado."}</p>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-3 lg:w-[28rem]">
-                  <Info label="Proponente" value={projeto.proponente || "Nao informado"} />
-                  <Info label="Fiscal" value={projeto.auditor || "Nao definido"} />
-                  <Info label="Edital" value={projeto.editalTitulo || projeto.edital?.titulo || "Nao vinculado"} />
+                  <Info label="Proponente" value={projeto.proponente || "Não informado"} />
+                  <Info label="Fiscal" value={projeto.auditor || "Não definido"} />
+                  <Info label="Edital" value={projeto.editalTitulo || projeto.edital?.titulo || "Não vinculado"} />
                   <Info label="Criado em" value={formatDateTime(projeto.criadoEm)} />
                 </div>
               </div>
@@ -115,11 +115,11 @@ export default function ProjetoDetalhePage() {
               <section className="lg:col-span-7 space-y-3">
                 <Step title="Etapa 1 - Instituicao e representante">
                   <InfoGrid items={[
-                    ["Razao social", projeto.instituicao?.razaoSocial],
+                    ["Razão social", projeto.instituicao?.razaoSocial],
                     ["Nome fantasia", projeto.instituicao?.nomeFantasia],
                     ["CNPJ", projeto.instituicao?.cnpj],
-                    ["Natureza juridica", projeto.instituicao?.naturezaJuridica],
-                    ["Area de atuacao", projeto.instituicao?.areaAtuacao],
+                    ["Natureza jurídica", projeto.instituicao?.naturezaJuridica],
+                    ["Área de atuação", projeto.instituicao?.areaAtuacao],
                     ["Representante", projeto.instituicao?.representanteLegal?.nomeCompleto || projeto.instituicao?.representanteLegal?.nome],
                     ["E-mail", projeto.instituicao?.representanteLegal?.email],
                     ["Telefone", projeto.instituicao?.representanteLegal?.telefone],
@@ -132,38 +132,38 @@ export default function ProjetoDetalhePage() {
                     ["Resumo", projeto.resumo],
                     ["Justificativa e merito", projeto.justificativaMerito],
                     ["Edital", projeto.editalTitulo || projeto.edital?.titulo],
-                    ["Frente de atuacao", projeto.edital?.frenteAtuacao],
-                    ["Regiao imediata", projeto.edital?.regiaoImediata],
+                    ["Frente de atuação", projeto.edital?.frenteAtuacao],
+                    ["Região imediata", projeto.edital?.regiaoImediata],
                   ]} />
                 </Step>
 
                 <Step title="Etapa 3 - Localizacao">
                   <InfoGrid items={[
-                    ["Municipio", projeto.localizacao?.municipio?.nome],
+                    ["Município", projeto.localizacao?.municipio?.nome],
                     ["Comunidade", projeto.localizacao?.comunidade],
                     ["Latitude", projeto.localizacao?.latitude],
                     ["Longitude", projeto.localizacao?.longitude],
                   ]} />
                 </Step>
 
-                <Step title="Etapa 4 - Publico beneficiado">
+                <Step title="Etapa 4 - Público beneficiado">
                   <InfoGrid items={[
                     ["Mulheres", projeto.publicoBeneficiado?.mulheresQuant],
                     ["Homens", projeto.publicoBeneficiado?.homensQuant],
-                    ["Criancas", projeto.publicoBeneficiado?.criancasQuant],
+                    ["Crianças", projeto.publicoBeneficiado?.criancasQuant],
                     ["Jovens", projeto.publicoBeneficiado?.jovensQuant],
                     ["Idosos", projeto.publicoBeneficiado?.idososQuant],
-                    ["Povos indigenas", projeto.publicoBeneficiado?.povosIndigenasQuant],
+                    ["Povos indígenas", projeto.publicoBeneficiado?.povosIndigenasQuant],
                     ["Quilombolas", projeto.publicoBeneficiado?.quilombolasQuant],
                     ["Agricultura familiar", projeto.publicoBeneficiado?.agricultoresFamiliarQuant],
                     ["Comunidades tradicionais", projeto.publicoBeneficiado?.comunidadesTradicionaisQuant],
-                    ["Renda media", projeto.publicoBeneficiado?.rendaMedia],
+                    ["Renda média", projeto.publicoBeneficiado?.rendaMedia],
                     ["Fonte de renda", projeto.publicoBeneficiado?.fonteRendaPrincipal],
-                    ["Aplicacao do beneficio", projeto.publicoBeneficiado?.descricaoAplicacaoBeneficio],
+                    ["Aplicação do benefício", projeto.publicoBeneficiado?.descricaoAplicacaoBeneficio],
                   ]} />
                 </Step>
 
-                <Step title="Etapa 5 - Plano de execucao">
+                <Step title="Etapa 5 - Plano de execução">
                   <InfoGrid items={[
                     ["Objetivo geral", projeto.planoExecucao?.objetivoGeral],
                     ["Objetivo especifico", projeto.planoExecucao?.objetivoEspecifico],
@@ -173,8 +173,8 @@ export default function ProjetoDetalhePage() {
                       <div key={`${atividade.id ?? index}`} className="rounded-xl border border-border bg-secondary/40 p-4">
                         <div className="font-medium">{atividade.descricao || `Atividade ${index + 1}`}</div>
                         <div className="mt-2 grid sm:grid-cols-3 gap-3 text-sm">
-                          <Info label="Responsavel" value={atividade.responsavel || "Nao informado"} />
-                          <Info label="Inicio" value={formatDate(atividade.dataInicio)} />
+                          <Info label="Responsável" value={atividade.responsavel || "Não informado"} />
+                          <Info label="Início" value={formatDate(atividade.dataInicio)} />
                           <Info label="Fim" value={formatDate(atividade.dataFim)} />
                         </div>
                       </div>
@@ -184,7 +184,7 @@ export default function ProjetoDetalhePage() {
 
                 <Step title="Etapa 6 - Declaracoes">
                   <InfoGrid items={[
-                    ["Veracidade das informacoes", yesNo(projeto.declarouVeracidadeInformacoes)],
+                    ["Veracidade das informações", yesNo(projeto.declarouVeracidadeInformacoes)],
                     ["Tratamento de dados LGPD", yesNo(projeto.autorizouTratamentoDadosLgpd)],
                     ["Prestacao de contas", yesNo(projeto.comprometeuPrestacaoContas)],
                     ["Monitoramento e auditoria", yesNo(projeto.autorizouMonitoramentoAuditoria)],
@@ -195,7 +195,7 @@ export default function ProjetoDetalhePage() {
               <aside className="lg:col-span-5 space-y-5">
                 {canSendEvidence && (
                   <section className="bg-card border border-border rounded-2xl p-5">
-                    <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">Nova evidencia</div>
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">Nova evidência</div>
                     <h2 className="mt-2 font-display text-2xl">Acompanhamento</h2>
                     <select value={atividadeId} onChange={(event) => setAtividadeId(event.target.value)} className="mt-4 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm">
                       <option value="">Sem atividade especifica</option>
@@ -204,9 +204,9 @@ export default function ProjetoDetalhePage() {
                       ))}
                     </select>
                     <input type="file" onChange={(event: ChangeEvent<HTMLInputElement>) => setFile(event.target.files?.[0] ?? null)} className="mt-3 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm" />
-                    <textarea value={descricao} onChange={(event) => setDescricao(event.target.value)} placeholder="Descreva a evidencia enviada" className="mt-3 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm min-h-28" />
+                    <textarea value={descricao} onChange={(event) => setDescricao(event.target.value)} placeholder="Descreva a evidência enviada" className="mt-3 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm min-h-28" />
                     <button onClick={enviarEvidencia} disabled={sending} className="mt-3 w-full rounded-full bg-gradient-hero text-primary-foreground px-4 py-2.5 text-sm font-medium disabled:opacity-50">
-                      {sending ? "Enviando..." : "Enviar evidencia"}
+                      {sending ? "Enviando..." : "Enviar evidência"}
                     </button>
                   </section>
                 )}
@@ -215,7 +215,7 @@ export default function ProjetoDetalhePage() {
                   <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">Linha do tempo</div>
                   <h2 className="mt-2 font-display text-2xl">Evidencias</h2>
                   <div className="mt-5 space-y-3">
-                    {(projeto.evidencias ?? []).length === 0 && <div className="rounded-xl border border-dashed border-border py-10 text-center text-sm text-muted-foreground">Nenhuma evidencia enviada.</div>}
+                    {(projeto.evidencias ?? []).length === 0 && <div className="rounded-xl border border-dashed border-border py-10 text-center text-sm text-muted-foreground">Nenhuma evidência enviada.</div>}
                     {(projeto.evidencias ?? []).map((evidencia) => (
                       <article key={evidencia.id} className="relative rounded-xl border border-border bg-secondary/35 p-4">
                         <div className="flex items-start justify-between gap-3">
@@ -223,11 +223,11 @@ export default function ProjetoDetalhePage() {
                             <span className={`inline-flex text-[10px] uppercase tracking-[0.16em] font-mono px-2 py-0.5 rounded-full border ${evidenciaStatusColor(evidencia.status)}`}>
                               {evidenciaStatusLabel(evidencia.status)}
                             </span>
-                            <div className="mt-2 text-sm font-medium">{evidencia.atividade || `Evidencia ${evidencia.id}`}</div>
+                            <div className="mt-2 text-sm font-medium">{evidencia.atividade || `Evidência ${evidencia.id}`}</div>
                           </div>
                           <span className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground font-mono">{formatDateTime(evidencia.criadoEm)}</span>
                         </div>
-                        <p className="mt-3 text-sm text-foreground/80">{evidencia.descricao || "Sem descricao."}</p>
+                        <p className="mt-3 text-sm text-foreground/80">{evidencia.descricao || "Sem descrição."}</p>
                         {evidencia.comentarioAuditor && (
                           <p className="mt-3 rounded-lg bg-card border border-border p-3 text-xs text-muted-foreground">
                             Parecer de {evidencia.validadoPor || "fiscal"}: {evidencia.comentarioAuditor}
@@ -287,16 +287,16 @@ function Info({ label, value }: { label: string; value: string }) {
 }
 
 function valueToText(value: unknown) {
-  if (value === null || value === undefined || value === "") return "Nao informado";
+  if (value === null || value === undefined || value === "") return "Não informado";
   return String(value);
 }
 
 function yesNo(value?: boolean | null) {
-  return value ? "Sim" : "Nao";
+  return value ? "Sim" : "Não";
 }
 
 function formatDateTime(value?: string | null) {
-  if (!value) return "Nao informado";
+  if (!value) return "Não informado";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return formatDate(value);
   return new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "short", year: "numeric" }).format(date);

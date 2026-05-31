@@ -18,7 +18,7 @@ export default function SimuladorCard() {
               <div className="h-2.5 w-2.5 rounded-full bg-mist" />
               <div className="h-2.5 w-2.5 rounded-full bg-leaf/60" />
             </div>
-            <span className="ml-3 font-mono text-[11px] text-muted-foreground">submissao/projeto-PRJ-2026-0418</span>
+            <span className="ml-3 font-mono text-[11px] text-muted-foreground">submissão/projeto-PRJ-2026-0418</span>
           </div>
           <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Etapa 4 de 10</span>
         </div>

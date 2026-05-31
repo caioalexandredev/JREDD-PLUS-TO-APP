@@ -91,7 +91,7 @@ export default function Avaliador() {
         setEditais(filtered);
         setSelected(filtered[0] ?? null);
       })
-      .catch(() => toast.error("Nao foi possivel carregar seus editais."));
+      .catch(() => toast.error("Não foi possível carregar seus editais."));
     api<User[]>("/users/perfil?profile=AUDITOR").then(setAuditores).catch(() => setAuditores([]));
   }, [statusParam]);
 
@@ -115,7 +115,7 @@ export default function Avaliador() {
         setActiveProject(projetosData[0] ?? null);
         setActiveTab("formulario");
       })
-      .catch(() => toast.error("Nao foi possivel carregar os projetos."));
+      .catch(() => toast.error("Não foi possível carregar os projetos."));
   }, [selected]);
 
   useEffect(() => {
@@ -131,7 +131,7 @@ export default function Avaliador() {
       .then(setActiveProjectDetail)
       .catch(() => {
         setActiveProjectDetail(null);
-        toast.error("Nao foi possivel carregar os dados completos do projeto.");
+        toast.error("Não foi possível carregar os dados completos do projeto.");
       })
       .finally(() => setProjectDetailLoading(false));
   }, [activeProject]);
@@ -139,8 +139,8 @@ export default function Avaliador() {
   const stats = useMemo(() => [
     { l: "Editais", v: String(editais.length), sub: "vinculados" },
     { l: "Projetos", v: String(projetos.length), sub: "do edital" },
-    { l: "Avaliacoes", v: String(ranking.filter((item) => item.avaliacaoCompleta).length), sub: "completas" },
-    { l: "Pendencias", v: String(ranking.reduce((sum, item) => sum + item.pendencias, 0)), sub: "criterios" },
+    { l: "Avaliações", v: String(ranking.filter((item) => item.avaliacaoCompleta).length), sub: "completas" },
+    { l: "Pendências", v: String(ranking.reduce((sum, item) => sum + item.pendencias, 0)), sub: "critérios" },
   ], [editais.length, projetos.length, ranking]);
 
   const canSelectWinner = ranking.length > 0 && ranking.every((item) => item.avaliacaoCompleta);
@@ -161,7 +161,7 @@ export default function Avaliador() {
       return !Number.isInteger(value) || value < 1 || value > 10;
     });
     if (invalid) {
-      toast.error("Preencha todos os criterios com notas inteiras de 1 a 10.");
+      toast.error("Preencha todos os critérios com notas inteiras de 1 a 10.");
       return;
     }
     try {
@@ -175,10 +175,10 @@ export default function Avaliador() {
           })),
         }),
       });
-      toast.success("Avaliacao salva.");
+      toast.success("Avaliação salva.");
       setRanking(await api<Ranking[]>(`/avaliador/editais/${detalhe.id}/ranking`));
     } catch {
-      toast.error("Preencha todos os criterios com notas de 1 a 10.");
+      toast.error("Preencha todos os critérios com notas de 1 a 10.");
     }
   };
 
@@ -201,7 +201,7 @@ export default function Avaliador() {
       setWinnerCandidate(null);
       setConfirmAuditorId("");
     } catch {
-      toast.error("Ainda existem avaliacoes pendentes ou o fiscal e invalido.");
+      toast.error("Ainda existem avaliações pendentes ou o fiscal é inválido.");
     } finally {
       setSelectingWinner(false);
     }
@@ -209,16 +209,16 @@ export default function Avaliador() {
 
   return (
     <div className="min-h-screen bg-background">
-      <NavBarInterna title="Area do avaliador" subtitle={`Avaliacao Tecnica ${info.name}`} />
+      <NavBarInterna title="Área do avaliador" subtitle={`Avaliação Técnica ${info.name}`} />
       <main className="mx-auto max-w-7xl px-6 py-12">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
           <div>
             <div className="text-xs uppercase tracking-[0.22em] text-muted-foreground font-mono"><span className="text-ocean">*</span> Avaliacao</div>
-            <h1 className="mt-3 font-display text-4xl sm:text-5xl leading-[1.02]">Avaliacao de <span className="text-gradient italic">projetos</span></h1>
+            <h1 className="mt-3 font-display text-4xl sm:text-5xl leading-[1.02]">Avaliação de <span className="text-gradient italic">projetos</span></h1>
             <p className="mt-2 text-muted-foreground max-w-xl">Selecione um edital, avalie os projetos vinculados e acompanhe a classificacao por media.</p>
           </div>
           <label className="lg:w-[26rem]">
-            <span className="block mb-2 text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">Edital em avaliacao</span>
+            <span className="block mb-2 text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">Edital em avaliação</span>
             <select value={selected?.id ?? ""} onChange={(e) => setSelected(editais.find((item) => item.id === Number(e.target.value)) ?? null)} className="w-full px-4 py-3 rounded-xl bg-card border border-border text-sm">
               {editais.length === 0 && <option value="">Nenhum edital disponivel</option>}
               {editais.map((edital) => <option key={edital.id} value={edital.id}>{edital.titulo}</option>)}
@@ -286,13 +286,13 @@ export default function Avaliador() {
               <div className="mt-6">
                 <div className="flex items-center justify-between gap-3 mb-4">
                   <div>
-                    <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">Formulario de avaliacao</div>
-                    <div className="text-sm text-muted-foreground">Notas obrigatorias de 1 a 10 para cada criterio.</div>
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">Formulário de avaliação</div>
+                    <div className="text-sm text-muted-foreground">Notas obrigatórias de 1 a 10 para cada critério.</div>
                   </div>
                   <button onClick={salvarAvaliacao} disabled={!activeProject} className="rounded-full bg-gradient-hero text-primary-foreground px-5 py-2.5 text-sm font-medium disabled:opacity-50">Salvar</button>
                 </div>
                 <div className="space-y-4">
-                  {sortedCriterios.length === 0 && <div className="rounded-xl border border-dashed border-border py-12 text-center text-muted-foreground">Nenhum criterio cadastrado.</div>}
+                  {sortedCriterios.length === 0 && <div className="rounded-xl border border-dashed border-border py-12 text-center text-muted-foreground">Nenhum critério cadastrado.</div>}
                   {sortedCriterios.map((criterio) => (
                     <div key={criterio.id} className="rounded-xl border border-border bg-background/60 p-4">
                       <div className="flex items-center justify-between gap-3">
@@ -302,7 +302,7 @@ export default function Avaliador() {
                         </div>
                         <input type="number" min="1" max="10" step="1" value={scores[criterio.id] ?? ""} onChange={(e) => setScores((prev) => ({ ...prev, [criterio.id]: e.target.value }))} className="w-24 rounded-lg border border-border bg-card px-3 py-2 text-sm" />
                       </div>
-                      <textarea value={comments[criterio.id] ?? ""} onChange={(e) => setComments((prev) => ({ ...prev, [criterio.id]: e.target.value }))} placeholder="Comentario tecnico" className="mt-3 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm min-h-20" />
+                      <textarea value={comments[criterio.id] ?? ""} onChange={(e) => setComments((prev) => ({ ...prev, [criterio.id]: e.target.value }))} placeholder="Comentário técnico" className="mt-3 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm min-h-20" />
                     </div>
                   ))}
                 </div>
@@ -329,7 +329,7 @@ export default function Avaliador() {
               <div className="font-mono text-muted-foreground w-8">{index + 1}</div>
               <div className="flex-1">
                 <div className="font-medium">{item.nomeProjeto}</div>
-                <div className="text-xs text-muted-foreground">{item.proponente} - {item.avaliacaoCompleta ? "completa" : `${item.pendencias} pendencias`}</div>
+                <div className="text-xs text-muted-foreground">{item.proponente} - {item.avaliacaoCompleta ? "completa" : `${item.pendencias} pendências`}</div>
               </div>
               <div className="font-display text-2xl">{Number(item.notaFinal).toFixed(2)}</div>
               <button onClick={() => setWinnerCandidate(item)} disabled={!canSelectWinner} className="rounded-full border border-border px-4 py-2 text-sm hover:bg-secondary disabled:opacity-40">Escolher</button>
@@ -344,7 +344,7 @@ export default function Avaliador() {
             <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">Confirmar vencedor</div>
             <h2 className="mt-2 font-display text-2xl">{winnerCandidate.nomeProjeto}</h2>
             <p className="mt-2 text-sm text-muted-foreground">Ao confirmar, este projeto sera aprovado, os demais serao reprovados e o edital sera encerrado.</p>
-            <label className="mt-5 block text-sm font-medium">Fiscal responsavel</label>
+            <label className="mt-5 block text-sm font-medium">Fiscal responsável</label>
             <select value={confirmAuditorId} onChange={(e) => setConfirmAuditorId(e.target.value)} className="mt-2 w-full px-4 py-3 rounded-xl bg-background border border-border text-sm">
               <option value="">Selecionar fiscal</option>
               {auditores.map((auditor) => <option key={auditor.id} value={auditor.id}>{auditor.nome}</option>)}
@@ -366,7 +366,7 @@ function Tabs({ activeTab, onChange }: { activeTab: ActiveTab; onChange: (tab: A
   return (
     <div className="flex gap-1 p-1 bg-secondary rounded-xl w-fit">
       <button onClick={() => onChange("formulario")} className={`text-sm px-4 py-2 rounded-lg transition-all ${activeTab === "formulario" ? "bg-card shadow-soft text-foreground" : "text-muted-foreground hover:text-foreground"}`}>
-        Formulario de avaliacao
+        Formulário de avaliação
       </button>
       <button onClick={() => onChange("dados")} className={`text-sm px-4 py-2 rounded-lg transition-all ${activeTab === "dados" ? "bg-card shadow-soft text-foreground" : "text-muted-foreground hover:text-foreground"}`}>
         Dados do projeto
@@ -413,12 +413,12 @@ function ProjectDataTab({ loading, projeto }: { loading: boolean; projeto: Proje
           <div>
             <span className={`inline-flex text-[10px] uppercase tracking-[0.16em] font-mono px-2.5 py-1 rounded-full border ${projetoStatusColor(projeto.status)}`}>{projetoStatusLabel(projeto.status)}</span>
             <h3 className="mt-3 font-display text-2xl">{projeto.nome || "Projeto sem nome"}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">{projeto.resumo || "Resumo nao informado."}</p>
+            <p className="mt-2 text-sm text-muted-foreground">{projeto.resumo || "Resumo não informado."}</p>
           </div>
           <div className="grid sm:grid-cols-2 gap-2 md:w-80">
-            <Info label="Proponente" value={projeto.proponente || "Nao informado"} />
-            <Info label="Fiscal" value={projeto.auditor || "Nao definido"} />
-            <Info label="Edital" value={projeto.editalTitulo || projeto.edital?.titulo || "Nao vinculado"} />
+            <Info label="Proponente" value={projeto.proponente || "Não informado"} />
+            <Info label="Fiscal" value={projeto.auditor || "Não definido"} />
+            <Info label="Edital" value={projeto.editalTitulo || projeto.edital?.titulo || "Não vinculado"} />
             <Info label="Criado em" value={formatDateTime(projeto.criadoEm)} />
           </div>
         </div>
@@ -426,11 +426,11 @@ function ProjectDataTab({ loading, projeto }: { loading: boolean; projeto: Proje
 
       <DetailSection title="Etapa 1 - Instituicao e representante">
         <InfoGrid items={[
-          ["Razao social", projeto.instituicao?.razaoSocial],
+          ["Razão social", projeto.instituicao?.razaoSocial],
           ["Nome fantasia", projeto.instituicao?.nomeFantasia],
           ["CNPJ", projeto.instituicao?.cnpj],
-          ["Natureza juridica", projeto.instituicao?.naturezaJuridica],
-          ["Area de atuacao", projeto.instituicao?.areaAtuacao],
+          ["Natureza jurídica", projeto.instituicao?.naturezaJuridica],
+          ["Área de atuação", projeto.instituicao?.areaAtuacao],
           ["Representante", projeto.instituicao?.representanteLegal?.nomeCompleto || projeto.instituicao?.representanteLegal?.nome],
           ["E-mail", projeto.instituicao?.representanteLegal?.email],
           ["Telefone", projeto.instituicao?.representanteLegal?.telefone],
@@ -442,38 +442,38 @@ function ProjectDataTab({ loading, projeto }: { loading: boolean; projeto: Proje
           ["Nome do projeto", projeto.nome],
           ["Resumo", projeto.resumo],
           ["Justificativa e merito", projeto.justificativaMerito],
-          ["Frente de atuacao", projeto.edital?.frenteAtuacao],
-          ["Regiao imediata", projeto.edital?.regiaoImediata],
+          ["Frente de atuação", projeto.edital?.frenteAtuacao],
+          ["Região imediata", projeto.edital?.regiaoImediata],
         ]} />
       </DetailSection>
 
       <DetailSection title="Etapa 3 - Localizacao">
         <InfoGrid items={[
-          ["Municipio", projeto.localizacao?.municipio?.nome],
+          ["Município", projeto.localizacao?.municipio?.nome],
           ["Comunidade", projeto.localizacao?.comunidade],
           ["Latitude", projeto.localizacao?.latitude],
           ["Longitude", projeto.localizacao?.longitude],
         ]} />
       </DetailSection>
 
-      <DetailSection title="Etapa 4 - Publico beneficiado">
+      <DetailSection title="Etapa 4 - Público beneficiado">
         <InfoGrid items={[
           ["Mulheres", projeto.publicoBeneficiado?.mulheresQuant],
           ["Homens", projeto.publicoBeneficiado?.homensQuant],
-          ["Criancas", projeto.publicoBeneficiado?.criancasQuant],
+          ["Crianças", projeto.publicoBeneficiado?.criancasQuant],
           ["Jovens", projeto.publicoBeneficiado?.jovensQuant],
           ["Idosos", projeto.publicoBeneficiado?.idososQuant],
-          ["Povos indigenas", projeto.publicoBeneficiado?.povosIndigenasQuant],
+          ["Povos indígenas", projeto.publicoBeneficiado?.povosIndigenasQuant],
           ["Quilombolas", projeto.publicoBeneficiado?.quilombolasQuant],
           ["Agricultura familiar", projeto.publicoBeneficiado?.agricultoresFamiliarQuant],
           ["Comunidades tradicionais", projeto.publicoBeneficiado?.comunidadesTradicionaisQuant],
-          ["Renda media", projeto.publicoBeneficiado?.rendaMedia],
+          ["Renda média", projeto.publicoBeneficiado?.rendaMedia],
           ["Fonte de renda", projeto.publicoBeneficiado?.fonteRendaPrincipal],
-          ["Aplicacao do beneficio", projeto.publicoBeneficiado?.descricaoAplicacaoBeneficio],
+          ["Aplicação do benefício", projeto.publicoBeneficiado?.descricaoAplicacaoBeneficio],
         ]} />
       </DetailSection>
 
-      <DetailSection title="Etapa 5 - Plano de execucao">
+      <DetailSection title="Etapa 5 - Plano de execução">
         <InfoGrid items={[
           ["Objetivo geral", projeto.planoExecucao?.objetivoGeral],
           ["Objetivo especifico", projeto.planoExecucao?.objetivoEspecifico],
@@ -483,8 +483,8 @@ function ProjectDataTab({ loading, projeto }: { loading: boolean; projeto: Proje
             <div key={`${atividade.id ?? index}`} className="rounded-xl border border-border bg-background/60 p-4">
               <div className="font-medium">{atividade.descricao || `Atividade ${index + 1}`}</div>
               <div className="mt-2 grid sm:grid-cols-3 gap-2">
-                <Info label="Responsavel" value={atividade.responsavel || "Nao informado"} />
-                <Info label="Inicio" value={formatDate(atividade.dataInicio)} />
+                <Info label="Responsável" value={atividade.responsavel || "Não informado"} />
+                <Info label="Início" value={formatDate(atividade.dataInicio)} />
                 <Info label="Fim" value={formatDate(atividade.dataFim)} />
               </div>
             </div>
@@ -494,19 +494,19 @@ function ProjectDataTab({ loading, projeto }: { loading: boolean; projeto: Proje
 
       <DetailSection title="Etapa 6 - Declaracoes">
         <InfoGrid items={[
-          ["Veracidade das informacoes", yesNo(projeto.declarouVeracidadeInformacoes)],
+          ["Veracidade das informações", yesNo(projeto.declarouVeracidadeInformacoes)],
           ["Tratamento de dados LGPD", yesNo(projeto.autorizouTratamentoDadosLgpd)],
           ["Prestacao de contas", yesNo(projeto.comprometeuPrestacaoContas)],
           ["Monitoramento e auditoria", yesNo(projeto.autorizouMonitoramentoAuditoria)],
         ]} />
       </DetailSection>
 
-      <DetailSection title="Atividades e evidencias">
+      <DetailSection title="Atividades e evidências">
         <div className="grid md:grid-cols-2 gap-3">
           {(projeto.atividades ?? []).map((atividade) => (
             <div key={atividade.id} className="rounded-xl border border-border bg-background/60 p-4">
               <div className="font-medium">{atividade.nome || atividade.descricao || `Atividade ${atividade.id}`}</div>
-              <div className="mt-1 text-xs text-muted-foreground">{atividade.responsavel || "Responsavel nao informado"}</div>
+              <div className="mt-1 text-xs text-muted-foreground">{atividade.responsavel || "Responsável não informado"}</div>
               <div className="mt-3 text-[10px] uppercase tracking-[0.16em] font-mono text-muted-foreground">{atividade.status || "Sem status"}</div>
             </div>
           ))}
@@ -516,12 +516,12 @@ function ProjectDataTab({ loading, projeto }: { loading: boolean; projeto: Proje
           {(projeto.evidencias ?? []).map((evidencia) => (
             <div key={evidencia.id} className="rounded-xl border border-border bg-background/60 p-4">
               <span className={`inline-flex text-[10px] uppercase tracking-[0.16em] font-mono px-2 py-0.5 rounded-full border ${evidenciaStatusColor(evidencia.status)}`}>{evidenciaStatusLabel(evidencia.status)}</span>
-              <div className="mt-2 text-sm font-medium">{evidencia.atividade || `Evidencia ${evidencia.id}`}</div>
-              <p className="mt-2 text-sm text-muted-foreground">{evidencia.descricao || "Sem descricao."}</p>
+              <div className="mt-2 text-sm font-medium">{evidencia.atividade || `Evidência ${evidencia.id}`}</div>
+              <p className="mt-2 text-sm text-muted-foreground">{evidencia.descricao || "Sem descrição."}</p>
               {evidencia.comentarioAuditor && <p className="mt-3 rounded-lg bg-card border border-border p-3 text-xs text-muted-foreground">Parecer de {evidencia.validadoPor || "fiscal"}: {evidencia.comentarioAuditor}</p>}
             </div>
           ))}
-          {(projeto.evidencias ?? []).length === 0 && <div className="rounded-xl border border-dashed border-border py-10 text-center text-sm text-muted-foreground">Nenhuma evidencia enviada.</div>}
+          {(projeto.evidencias ?? []).length === 0 && <div className="rounded-xl border border-dashed border-border py-10 text-center text-sm text-muted-foreground">Nenhuma evidência enviada.</div>}
         </div>
       </DetailSection>
     </div>
@@ -574,16 +574,16 @@ function resolveProjectCenter(projeto: Projeto): [number, number] {
 }
 
 function valueToText(value: unknown) {
-  if (value === null || value === undefined || value === "") return "Nao informado";
+  if (value === null || value === undefined || value === "") return "Não informado";
   return String(value);
 }
 
 function yesNo(value?: boolean | null) {
-  return value ? "Sim" : "Nao";
+  return value ? "Sim" : "Não";
 }
 
 function formatDateTime(value?: string | null) {
-  if (!value) return "Nao informado";
+  if (!value) return "Não informado";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return formatDate(value);
   return new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "short", year: "numeric" }).format(date);

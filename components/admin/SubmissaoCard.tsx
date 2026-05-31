@@ -26,12 +26,12 @@ export default function SubmissaoCard({ idx, projeto }: Props) {
             </span>
           </div>
           <h3 className="mt-2 font-display text-xl leading-tight">{projeto.nome || "Projeto sem nome"}</h3>
-          <div className="mt-1 text-sm text-muted-foreground">{projeto.razaoSocialInstituicao || "Instituicao nao informada"} - criado em {formatDate(projeto.dataCriacao)}</div>
+          <div className="mt-1 text-sm text-muted-foreground">{projeto.razaoSocialInstituicao || "Instituição não informada"} - criado em {formatDate(projeto.dataCriacao)}</div>
         </div>
         <div className="flex items-center gap-6 lg:gap-8 shrink-0">
           <div className="text-right">
             <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">Edital</div>
-            <div className="font-display text-lg max-w-48 truncate">{projeto.nomeEdital || "Nao vinculado"}</div>
+            <div className="font-display text-lg max-w-48 truncate">{projeto.nomeEdital || "Não vinculado"}</div>
           </div>
           <div className="hidden md:block w-32">
             <div className="flex items-center justify-between text-[10px] font-mono text-muted-foreground mb-1">

@@ -14,10 +14,10 @@ type Props = {
 const groups: Array<{ key: keyof PublicoForm; label: string }> = [
   { key: "mulheresQuant", label: "Mulheres" },
   { key: "homensQuant", label: "Homens" },
-  { key: "criancasQuant", label: "Criancas" },
+  { key: "criancasQuant", label: "Crianças" },
   { key: "jovensQuant", label: "Jovens" },
   { key: "idososQuant", label: "Idosos" },
-  { key: "povosIndigenasQuant", label: "Povos indigenas" },
+  { key: "povosIndigenasQuant", label: "Povos indígenas" },
   { key: "quilombolasQuant", label: "Quilombolas" },
   { key: "agricultoresFamiliarQuant", label: "Agricultores familiares" },
   { key: "comunidadesTradicionaisQuant", label: "Comunidades tradicionais" },
@@ -40,7 +40,7 @@ export default function Step4({ value, onChange }: Props) {
 
       <Section title="Perfil socioeconomico">
         <Grid>
-          <Field label="Renda media (R$)" span={6}>
+          <Field label="Renda média (R$)" span={6}>
             <Input type="number" min={0} step="0.01" value={value.rendaMedia} onChange={(e) => set("rendaMedia", e.target.value)} placeholder="1200.00" />
           </Field>
           <Field label="Fonte de renda principal" span={6}>

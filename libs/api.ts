@@ -69,12 +69,12 @@ export async function api<T>(path: string, options: ApiOptions = {}): Promise<T>
       clearSession();
     }
     redirectUnauthorized(response.status === 401 ? "session" : "role");
-    throw new Error("Acesso nao autorizado.");
+    throw new Error("Acesso não autorizado.");
   }
   
   if (!response.ok) {
     const message = await response.text();
-    throw new Error(message || "Nao foi possivel concluir a operacao.");
+    throw new Error(message || "Não foi possível concluir a operação.");
   }
   if (response.status === 204) return undefined as T;
   return response.json() as Promise<T>;
@@ -111,7 +111,7 @@ export async function downloadDocumento(documentoId: string, fallbackName = `doc
 
   const response = await fetch(`${API_URL}/documentos/${documentoId}`, { headers });
   if (!response.ok) {
-    throw new Error("Nao foi possivel baixar o documento.");
+    throw new Error("Não foi possível baixar o documento.");
   }
 
   const blob = await response.blob();

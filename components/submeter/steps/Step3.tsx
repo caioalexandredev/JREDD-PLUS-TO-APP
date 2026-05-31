@@ -16,7 +16,7 @@ export default function Step3({ value, municipios, onChange }: Props) {
 
   return (
     <>
-      <Section title="Georreferenciamento" hint="Informe a coordenada central e o municipio da area do projeto">
+      <Section title="Georreferenciamento" hint="Informe a coordenada central e o município da área do projeto">
         <div className="grid lg:grid-cols-12 gap-4">
           <div className="lg:col-span-7 relative rounded-2xl overflow-hidden border border-border bg-gradient-mesh min-h-[320px]">
             <svg viewBox="0 0 400 280" className="absolute inset-0 w-full h-full">
@@ -43,7 +43,7 @@ export default function Step3({ value, municipios, onChange }: Props) {
               <Field label="Longitude" span={6}>
                 <Input value={value.longitude} onChange={(e) => set("longitude", e.target.value)} placeholder="-48.333" />
               </Field>
-              <Field label="Municipio" span={12} required>
+              <Field label="Município" span={12} required>
                 <Select value={value.idMunicipio} onChange={(e) => set("idMunicipio", e.target.value)}>
                   <option value="">Selecione</option>
                   {municipios.map((municipio) => (
@@ -63,7 +63,7 @@ export default function Step3({ value, municipios, onChange }: Props) {
         <div className="grid sm:grid-cols-4 gap-px bg-border rounded-2xl overflow-hidden">
           {[
             { l: "Cobertura florestal", v: "A calcular" },
-            { l: "Area degradada", v: "A calcular" },
+            { l: "Área degradada", v: "A calcular" },
             { l: "Historico de fogo", v: "A calcular" },
             { l: "Uso agropecuario", v: "A calcular" },
           ].map((k) => (

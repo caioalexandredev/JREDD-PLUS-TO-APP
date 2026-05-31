@@ -29,14 +29,14 @@ function EditalListItem({ edital }: { edital: EditalResumoApi }) {
             {editalStatusLabel(edital.status)}
           </span>
           <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">
-            #{edital.id} - {edital.regiaoImediata || "Regiao nao informada"}
+            #{edital.id} - {edital.regiaoImediata || "Região não informada"}
           </span>
         </div>
         <div className="mt-1.5 font-display text-base leading-snug">
           {edital.titulo}
         </div>
         <div className="mt-1 text-xs text-muted-foreground">
-          {edital.frenteAtuacao || "Frente nao informada"} - Inscricoes ate {formatDate(edital.fimRecebimentoPropostas)} - {formatCurrencyRange(edital.valorMinimo, edital.valorMaximo)}
+          {edital.frenteAtuacao || "Frente não informada"} - Inscrições até {formatDate(edital.fimRecebimentoPropostas)} - {formatCurrencyRange(edital.valorMinimo, edital.valorMaximo)}
         </div>
       </div>
       <ChevronRightIcon />
@@ -56,7 +56,7 @@ export default function EditalSubmissionModal({ onClose }: { onClose: () => void
         setEditais((page.content ?? []).filter((edital) => edital.status === "ABERTO"));
         setError("");
       })
-      .catch(() => setError("Nao foi possivel carregar os editais abertos."))
+      .catch(() => setError("Não foi possível carregar os editais abertos."))
       .finally(() => setLoading(false));
   }, []);
 
@@ -89,11 +89,11 @@ export default function EditalSubmissionModal({ onClose }: { onClose: () => void
           <div className="flex items-start justify-between gap-4">
             <div>
               <div className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground font-mono">
-                <span className="text-leaf">o</span> Nova submissao
+                <span className="text-leaf">o</span> Nova submissão
               </div>
               <h2 className="mt-2 font-display text-2xl tracking-[-0.01em]">Escolha o edital</h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                Selecione um edital aberto para iniciar a submissao guiada em 6 etapas.
+                Selecione um edital aberto para iniciar a submissão guiada em 6 etapas.
               </p>
             </div>
             <button
@@ -110,7 +110,7 @@ export default function EditalSubmissionModal({ onClose }: { onClose: () => void
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               autoFocus
-              placeholder="Buscar edital por frente ou regiao..."
+              placeholder="Buscar edital por frente ou região..."
               className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-secondary/60 border border-transparent text-sm focus:outline-none focus:border-ocean focus:bg-card transition-all"
             />
           </div>
@@ -131,7 +131,7 @@ export default function EditalSubmissionModal({ onClose }: { onClose: () => void
 
         <div className="p-4 border-t border-border bg-secondary/30 flex items-center justify-between text-xs text-muted-foreground">
           <span>
-            Nao encontrou? <Link href={pages.editais.path} className="text-foreground underline">Ver todos os editais</Link>
+            Não encontrou? <Link href={pages.editais.path} className="text-foreground underline">Ver todos os editais</Link>
           </span>
           <button
             onClick={onClose}

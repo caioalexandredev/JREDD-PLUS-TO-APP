@@ -18,12 +18,12 @@ import { SubmissionForm } from "./types";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const steps = [
-  { n: "01", t: "Identificacao do proponente", s: "Dados da instituicao e representante legal" },
+  { n: "01", t: "Identificação do proponente", s: "Dados da instituição e representante legal" },
   { n: "02", t: "Caracterizacao do projeto", s: "Nome, edital e justificativa" },
-  { n: "03", t: "Localizacao e area", s: "Georreferenciamento e municipio" },
-  { n: "04", t: "Publico beneficiado", s: "Quantitativos e perfil socioeconomico" },
-  { n: "05", t: "Plano de execucao", s: "Objetivos, atividades e cronograma" },
-  { n: "06", t: "Declaracoes e submissao", s: "Termos obrigatorios e envio" },
+  { n: "03", t: "Localização e área", s: "Georreferenciamento e município" },
+  { n: "04", t: "Público beneficiado", s: "Quantitativos e perfil socioeconômico" },
+  { n: "05", t: "Plano de execução", s: "Objetivos, atividades e cronograma" },
+  { n: "06", t: "Declarações e submissão", s: "Termos obrigatórios e envio" },
 ] as const;
 
 const initialForm: SubmissionForm = {
@@ -112,7 +112,7 @@ export default function Submeter(): React.ReactNode {
         setNaturezas(naturezaPage.content ?? []);
         setMunicipios(municipioPage.content ?? []);
       })
-      .catch(() => toast.error("Nao foi possivel carregar os dados para submissao."))
+      .catch(() => toast.error("Não foi possível carregar os dados para submissão."))
       .finally(() => setLoading(false));
   }, [editalId]);
 
@@ -128,7 +128,7 @@ export default function Submeter(): React.ReactNode {
 
   const saveCurrentStep = async () => {
     if (!editalId || !edital) {
-      toast.error("Selecione um edital antes de iniciar a submissao.");
+      toast.error("Selecione um edital antes de iniciar a submissão.");
       return;
     }
     const validationMessage = validateStep(current, form);
@@ -152,7 +152,7 @@ export default function Submeter(): React.ReactNode {
         router.push(pages.painel.path);
       }
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Nao foi possivel salvar esta etapa.");
+      toast.error(error instanceof Error ? error.message : "Não foi possível salvar esta etapa.");
     } finally {
       setSaving(false);
     }
@@ -161,7 +161,7 @@ export default function Submeter(): React.ReactNode {
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center text-muted-foreground">
-        Carregando submissao...
+        Carregando submissão...
       </div>
     );
   }
@@ -170,8 +170,8 @@ export default function Submeter(): React.ReactNode {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center px-6">
         <div className="max-w-lg rounded-2xl border border-border bg-card p-8 text-center">
-          <div className="font-display text-3xl">Edital nao selecionado</div>
-          <p className="mt-3 text-sm text-muted-foreground">Escolha um edital aberto para iniciar a submissao de projeto.</p>
+          <div className="font-display text-3xl">Edital não selecionado</div>
+          <p className="mt-3 text-sm text-muted-foreground">Escolha um edital aberto para iniciar a submissão de projeto.</p>
           <Link href={pages.painel.path} className="mt-6 inline-flex rounded-full bg-gradient-hero text-primary-foreground px-5 py-3 text-sm font-medium">
             Voltar ao painel
           </Link>
@@ -214,10 +214,10 @@ export default function Submeter(): React.ReactNode {
 
             <div className="mt-8 rounded-2xl bg-gradient-mesh border border-border p-5">
               <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-mono">Resumo do edital</div>
-              <div className="mt-3 text-sm font-medium">{edital.frenteAtuacao || "Frente nao informada"}</div>
-              <div className="mt-1 text-xs text-muted-foreground">{edital.regiaoImediata || "Regiao nao informada"}</div>
+              <div className="mt-3 text-sm font-medium">{edital.frenteAtuacao || "Frente não informada"}</div>
+              <div className="mt-1 text-xs text-muted-foreground">{edital.regiaoImediata || "Região não informada"}</div>
               <div className="mt-3 text-xs text-muted-foreground">{formatCurrencyRange(edital.valorMinimo, edital.valorMaximo)}</div>
-              <div className="mt-1 text-xs text-muted-foreground">Inscricoes ate {formatDate(edital.fimRecebimentoPropostas)}</div>
+              <div className="mt-1 text-xs text-muted-foreground">Inscrições até {formatDate(edital.fimRecebimentoPropostas)}</div>
             </div>
           </div>
         </aside>
@@ -339,11 +339,11 @@ async function submitStep(current: number, form: SubmissionForm, editalId: numbe
 function validateStep(current: number, form: SubmissionForm) {
   if (current === 0) {
     const rep = form.etapa1.representanteLegal;
-    if (!form.etapa1.razaoSocial || !form.etapa1.cnpj || !form.etapa1.idNaturezaJuridica) return "Preencha razao social, CNPJ e natureza juridica.";
+    if (!form.etapa1.razaoSocial || !form.etapa1.cnpj || !form.etapa1.idNaturezaJuridica) return "Preencha razão social, CNPJ e natureza jurídica.";
     if (!rep.nomeCompleto || !rep.cpf || !rep.email || !rep.telefone || !rep.cargo) return "Preencha os dados obrigatorios do representante legal.";
   }
   if (current === 1 && (!form.etapa2.nomeProjeto || !form.etapa2.justificativaMerito)) return "Preencha nome do projeto e justificativa.";
-  if (current === 2 && (!form.etapa3.idMunicipio || !form.etapa3.comunidade)) return "Preencha municipio e comunidade.";
+  if (current === 2 && (!form.etapa3.idMunicipio || !form.etapa3.comunidade)) return "Preencha município e comunidade.";
   if (current === 3) {
     const requiredNumbers = [
       form.etapa4.mulheresQuant,
@@ -356,14 +356,14 @@ function validateStep(current: number, form: SubmissionForm) {
       form.etapa4.agricultoresFamiliarQuant,
       form.etapa4.comunidadesTradicionaisQuant,
     ];
-    if (requiredNumbers.some((value) => value === "")) return "Informe todos os quantitativos de beneficiarios.";
-    if (!form.etapa4.descricaoAplicacaoBeneficio) return "Descreva como o publico sera beneficiado.";
+    if (requiredNumbers.some((value) => value === "")) return "Informe todos os quantitativos de beneficiários.";
+    if (!form.etapa4.descricaoAplicacaoBeneficio) return "Descreva como o público será beneficiado.";
   }
   if (current === 4) {
     if (!form.etapa5.objetivoGeral || !form.etapa5.objetivoEspecifico) return "Preencha os objetivos do projeto.";
-    if (form.etapa5.atividades.some((atividade) => !atividade.descricao || !atividade.responsavel || !atividade.dataInicio || !atividade.dataFim)) return "Preencha todas as atividades do plano de execucao.";
+    if (form.etapa5.atividades.some((atividade) => !atividade.descricao || !atividade.responsavel || !atividade.dataInicio || !atividade.dataFim)) return "Preencha todas as atividades do plano de execução.";
   }
-  if (current === 5 && Object.values(form.etapa6).some((accepted) => !accepted)) return "Aceite todos os termos obrigatorios para submeter.";
+  if (current === 5 && Object.values(form.etapa6).some((accepted) => !accepted)) return "Aceite todos os termos obrigatórios para submeter.";
   return "";
 }
 

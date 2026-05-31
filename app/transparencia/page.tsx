@@ -1,13 +1,13 @@
 import Navbar from "@/components/home/navbar";
 import Rodape from "@/components/home/rodape";
-import Transparencia from "@/components/transparencia";
+import Transparência from "@/components/transparencia";
 
 export default function TransparenciaPage() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       <main className="pt-20">
-        <Transparencia />
+        <Transparência />
       </main>
       <Rodape />
     </div>

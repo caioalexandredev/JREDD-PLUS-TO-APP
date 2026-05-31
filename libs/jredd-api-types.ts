@@ -201,7 +201,7 @@ export type MunicipioApi = {
 
 export function editalStatusLabel(status?: EditalStatusApi) {
   if (status === "ABERTO") return "Aberto";
-  if (status === "EM_AVALIACAO") return "Em avaliacao";
+  if (status === "EM_AVALIACAO") return "Em avaliação";
   if (status === "ENCERRADO") return "Encerrado";
   return "Rascunho";
 }
@@ -216,11 +216,11 @@ export function editalStatusColor(status?: EditalStatusApi) {
 export function projetoStatusLabel(status?: StatusProjetoApi | string | null) {
   if (status === "RASCUNHO") return "Rascunho";
   if (status === "SUBMETIDO") return "Submetido";
-  if (status === "EM_AVALIACAO") return "Em avaliacao";
+  if (status === "EM_AVALIACAO") return "Em avaliação";
   if (status === "APROVADO") return "Aprovado";
   if (status === "REPROVADO") return "Reprovado";
-  if (status === "EM_EXECUCAO") return "Em execucao";
-  if (status === "CONCLUIDO") return "Concluido";
+  if (status === "EM_EXECUCAO") return "Em execução";
+  if (status === "CONCLUIDO") return "Concluído";
   return "Rascunho";
 }
 
@@ -246,7 +246,7 @@ export function evidenciaStatusColor(status?: StatusEvidenciaApi | string | null
 }
 
 export function formatCurrency(value?: number | null) {
-  if (value == null) return "Nao informado";
+  if (value == null) return "Não informado";
   return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(value);
 }
 
@@ -256,7 +256,7 @@ export function formatCurrencyRange(min?: number | null, max?: number | null) {
 }
 
 export function formatDate(value?: string | null) {
-  if (!value) return "Nao informado";
+  if (!value) return "Não informado";
   const date = new Date(`${value}T00:00:00`);
   if (Number.isNaN(date.getTime())) return value;
   return new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "short", year: "numeric" }).format(date);

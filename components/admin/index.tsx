@@ -26,7 +26,7 @@ import {
 
 const TABS: TabOption[] = [
   { value: "editais", label: "Editais publicados" },
-  { value: "submissoes", label: "Submissoes recebidas" },
+  { value: "submissoes", label: "Submissões recebidas" },
 ];
 
 const editalStatusOptions: Array<"Todos" | EditalStatusApi> = ["Todos", "RASCUNHO", "ABERTO", "EM_AVALIACAO", "ENCERRADO"];
@@ -58,7 +58,7 @@ export default function Admin() {
       setEditais(page.content ?? []);
     } catch {
       setEditais([]);
-      toast.error("Nao foi possivel carregar editais do backend.");
+      toast.error("Não foi possível carregar editais do backend.");
     } finally {
       setLoadingEditais(false);
     }
@@ -76,7 +76,7 @@ export default function Admin() {
     } catch {
       setProjetos([]);
       setIndicadores(emptyIndicators);
-      toast.error("Nao foi possivel carregar submissoes do backend.");
+      toast.error("Não foi possível carregar submissões do backend.");
     } finally {
       setLoadingProjetos(false);
     }
@@ -115,9 +115,9 @@ export default function Admin() {
           <div>
             <div className="text-xs uppercase tracking-[0.22em] text-muted-foreground font-mono"><span className="text-destructive">o</span> Painel administrativo</div>
             <h1 className="mt-3 font-display text-4xl sm:text-5xl tracking-[-0.02em] leading-[1.02]">
-              Gestao de <span className="text-gradient italic">editais</span>
+              Gestão de <span className="text-gradient italic">editais</span>
             </h1>
-            <p className="mt-2 text-muted-foreground max-w-xl">Cadastre novos editais, acompanhe a carteira ativa e monitore o pipeline de submissoes em avaliacao.</p>
+            <p className="mt-2 text-muted-foreground max-w-xl">Cadastre novos editais, acompanhe a carteira ativa e monitore o pipeline de submissões em avaliação.</p>
           </div>
           <button
             onClick={() => setOpen(true)}
@@ -154,7 +154,7 @@ export default function Admin() {
                   <tr className="text-left text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">
                     <th className="px-5 py-3">Edital</th>
                     <th className="px-5 py-3 hidden md:table-cell">Frente</th>
-                    <th className="px-5 py-3 hidden lg:table-cell">Regiao</th>
+                    <th className="px-5 py-3 hidden lg:table-cell">Região</th>
                     <th className="px-5 py-3">Valor</th>
                     <th className="px-5 py-3">Status</th>
                     <th className="px-5 py-3"></th>
@@ -196,7 +196,7 @@ export default function Admin() {
         {tab === "submissoes" && (
           <div className="mt-6 space-y-3">
             {loadingProjetos && <div className="rounded-2xl border border-dashed border-border py-16 text-center text-muted-foreground">Carregando submissoes...</div>}
-            {!loadingProjetos && projetos.length === 0 && <div className="rounded-2xl border border-dashed border-border py-16 text-center text-muted-foreground">Nenhuma submissao encontrada.</div>}
+            {!loadingProjetos && projetos.length === 0 && <div className="rounded-2xl border border-dashed border-border py-16 text-center text-muted-foreground">Nenhuma submissão encontrada.</div>}
             {!loadingProjetos && projetos.map((projeto, idx) => (
               <SubmissaoCard key={projeto.id} idx={idx} projeto={projeto} />
             ))}

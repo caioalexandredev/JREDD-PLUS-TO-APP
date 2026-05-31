@@ -26,7 +26,7 @@ export default function EditaisPage() {
         setEditais(page.content ?? []);
         setError("");
       })
-      .catch(() => setError("Nao foi possivel carregar os editais agora. Tente novamente em alguns instantes."))
+      .catch(() => setError("Não foi possível carregar os editais agora. Tente novamente em alguns instantes."))
       .finally(() => setLoading(false));
   }, []);
 
@@ -80,10 +80,10 @@ export default function EditaisPage() {
                   </span>
                 </div>
                 <h2 className="mt-3 font-display text-2xl leading-tight">{edital.titulo}</h2>
-                <p className="mt-2 text-sm text-muted-foreground line-clamp-3">{edital.resumo || "Resumo do edital ainda nao informado."}</p>
+                <p className="mt-2 text-sm text-muted-foreground line-clamp-3">{edital.resumo || "Resumo do edital ainda não informado."}</p>
                 <div className="mt-5 flex flex-wrap gap-2 text-xs text-muted-foreground">
-                  <span className="rounded-full bg-secondary px-3 py-1">{edital.frenteAtuacao || "Frente nao informada"}</span>
-                  <span className="rounded-full bg-secondary px-3 py-1">{edital.regiaoImediata || "Regiao nao informada"}</span>
+                  <span className="rounded-full bg-secondary px-3 py-1">{edital.frenteAtuacao || "Frente não informada"}</span>
+                  <span className="rounded-full bg-secondary px-3 py-1">{edital.regiaoImediata || "Região não informada"}</span>
                   <span className="rounded-full bg-secondary px-3 py-1">{formatCurrencyRange(edital.valorMinimo, edital.valorMaximo)}</span>
                   <span className="rounded-full bg-secondary px-3 py-1">
                     Inscricoes: {formatDate(edital.inicioRecebimentoPropostas)} a {formatDate(edital.fimRecebimentoPropostas)}

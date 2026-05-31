@@ -5,7 +5,7 @@ import TransparenciaGrid from "./TransparenciaGrid";
 import TransparenciaMaopVisulization from "./TransparenciaMapVisulization";
 import TransparenciaCaption from "./TransparenciaCaption";
 
-export default function Transparencia() {
+export default function Transparência() {
   return (
     <section className="relative py-32 px-6 bg-foreground text-background overflow-hidden">
       <div className="absolute inset-0 opacity-50">

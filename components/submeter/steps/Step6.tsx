@@ -7,10 +7,10 @@ type Props = {
 };
 
 const terms: Array<{ key: keyof TermosForm; label: string }> = [
-  { key: "declarouVeracidadeInformacoes", label: "Declaro a veracidade de todas as informacoes prestadas neste formulario." },
-  { key: "autorizouTratamentoDadosLgpd", label: "Autorizo o tratamento de dados pessoais conforme a LGPD para fins de avaliacao e execucao do projeto." },
-  { key: "comprometeuPrestacaoContas", label: "Comprometo-me com a prestacao de contas dentro dos prazos estabelecidos pelo edital." },
-  { key: "autorizouMonitoramentoAuditoria", label: "Autorizo o monitoramento e auditoria do projeto pelo orgao gestor e pela sociedade civil." },
+  { key: "declarouVeracidadeInformacoes", label: "Declaro a veracidade de todas as informações prestadas neste formulário." },
+  { key: "autorizouTratamentoDadosLgpd", label: "Autorizo o tratamento de dados pessoais conforme a LGPD para fins de avaliação e execução do projeto." },
+  { key: "comprometeuPrestacaoContas", label: "Comprometo-me com a prestação de contas dentro dos prazos estabelecidos pelo edital." },
+  { key: "autorizouMonitoramentoAuditoria", label: "Autorizo o monitoramento e auditoria do projeto pelo órgão gestor e pela sociedade civil." },
 ];
 
 export default function Step6({ value, onChange }: Props) {
@@ -19,7 +19,7 @@ export default function Step6({ value, onChange }: Props) {
 
   return (
     <>
-      <Section title="Termos obrigatorios">
+      <Section title="Termos obrigatórios">
         <div className="space-y-3">
           {terms.map((term) => (
             <label key={term.key} className="flex items-start gap-3 p-3 rounded-xl hover:bg-secondary/40 cursor-pointer transition">
@@ -39,7 +39,7 @@ export default function Step6({ value, onChange }: Props) {
           <div>
             <div className="font-display text-xl">{ready ? "Pronto para submeter" : "Revise os termos obrigatorios"}</div>
             <p className="text-primary-foreground/75 text-sm mt-0.5">
-              A submissao sera enviada ao edital selecionado apos a confirmacao dos termos.
+              A submissão será enviada ao edital selecionado após a confirmação dos termos.
             </p>
           </div>
         </div>

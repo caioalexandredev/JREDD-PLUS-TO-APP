@@ -53,8 +53,8 @@ export default function NovoEditalModal({ onClose, onCreated }: { onClose: () =>
   const [avaliadoresIds, setAvaliadoresIds] = useState<number[]>([]);
   const [criterios, setCriterios] = useState<CriterioForm[]>([
     { nome: "Impacto ambiental", descricao: "Potencial de impacto ambiental positivo do projeto." },
-    { nome: "Viabilidade tecnica", descricao: "Clareza do plano de trabalho, equipe e cronograma." },
-    { nome: "Transparencia", descricao: "Capacidade de comprovar a execucao com evidencias." },
+    { nome: "Viabilidade técnica", descricao: "Clareza do plano de trabalho, equipe e cronograma." },
+    { nome: "Transparência", descricao: "Capacidade de comprovar a execução com evidências." },
   ]);
   const [documentos, setDocumentos] = useState<DocumentoEnviado[]>([]);
   const [loadingOptions, setLoadingOptions] = useState(true);
@@ -79,7 +79,7 @@ export default function NovoEditalModal({ onClose, onCreated }: { onClose: () =>
           orgaoProponenteId: current.orgaoProponenteId || String(orgaosData[0]?.id ?? ""),
         }));
       })
-      .catch(() => toast.error("Nao foi possivel carregar os dados do formulario."))
+      .catch(() => toast.error("Não foi possível carregar os dados do formulário."))
       .finally(() => setLoadingOptions(false));
   }, []);
 
@@ -111,7 +111,7 @@ export default function NovoEditalModal({ onClose, onCreated }: { onClose: () =>
       }))]);
       toast.success("Documento(s) enviado(s).");
     } catch {
-      toast.error("Nao foi possivel enviar o documento.");
+      toast.error("Não foi possível enviar o documento.");
     } finally {
       setSubmitting(false);
     }
@@ -121,14 +121,14 @@ export default function NovoEditalModal({ onClose, onCreated }: { onClose: () =>
     const valorMinimo = Number(form.valorMinimo);
     const valorMaximo = Number(form.valorMaximo);
 
-    if (!form.titulo.trim() || !form.resumo.trim()) return "Informe titulo e resumo.";
-    if (!form.frenteAtuacaoId || !form.regiaoImediataId || !form.orgaoProponenteId) return "Selecione frente, regiao e orgao proponente.";
-    if (!form.inicioRecebimentoPropostas || !form.fimRecebimentoPropostas) return "Informe o periodo de inscricoes.";
-    if (!valorMinimo || !valorMaximo) return "Informe valor minimo e valor maximo.";
-    if (valorMinimo > valorMaximo) return "Valor minimo nao pode ser maior que o valor maximo.";
-    if (form.inicioRecebimentoPropostas > form.fimRecebimentoPropostas) return "Inicio das inscricoes nao pode ser posterior ao fim.";
+    if (!form.titulo.trim() || !form.resumo.trim()) return "Informe título e resumo.";
+    if (!form.frenteAtuacaoId || !form.regiaoImediataId || !form.orgaoProponenteId) return "Selecione frente, região e órgão proponente.";
+    if (!form.inicioRecebimentoPropostas || !form.fimRecebimentoPropostas) return "Informe o período de inscrições.";
+    if (!valorMinimo || !valorMaximo) return "Informe valor mínimo e valor máximo.";
+    if (valorMinimo > valorMaximo) return "Valor mínimo não pode ser maior que o valor máximo.";
+    if (form.inicioRecebimentoPropostas > form.fimRecebimentoPropostas) return "Início das inscrições não pode ser posterior ao fim.";
     if (avaliadoresIds.length === 0) return "Selecione ao menos um avaliador.";
-    if (criteriosValidos.length === 0) return "Cadastre ao menos um criterio de avaliacao.";
+    if (criteriosValidos.length === 0) return "Cadastre ao menos um critério de avaliação.";
     if (documentos.length === 0) return "Envie ao menos um documento do edital.";
     return null;
   };
@@ -167,7 +167,7 @@ export default function NovoEditalModal({ onClose, onCreated }: { onClose: () =>
       toast.success("Edital cadastrado com sucesso.");
       onCreated();
     } catch {
-      toast.error("Nao foi possivel cadastrar o edital.");
+      toast.error("Não foi possível cadastrar o edital.");
     } finally {
       setSubmitting(false);
     }
@@ -185,7 +185,7 @@ export default function NovoEditalModal({ onClose, onCreated }: { onClose: () =>
           <div>
             <div className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground font-mono"><span className="text-destructive">●</span> Cadastro de edital</div>
             <h2 className="mt-2 font-display text-2xl tracking-[-0.01em]">Novo edital {info.name}</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Cadastre a chamada com criterios, avaliadores e documentos oficiais.</p>
+            <p className="mt-1 text-sm text-muted-foreground">Cadastre a chamada com critérios, avaliadores e documentos oficiais.</p>
           </div>
           <button onClick={onClose} className="h-9 w-9 inline-flex items-center justify-center rounded-full hover:bg-secondary transition-colors">
             <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18M6 6l12 12" strokeLinecap="round" /></svg>
@@ -193,24 +193,24 @@ export default function NovoEditalModal({ onClose, onCreated }: { onClose: () =>
         </div>
 
         <form onSubmit={submit} className="p-6 max-h-[70vh] overflow-y-auto space-y-4">
-          {loadingOptions && <div className="rounded-xl bg-secondary/50 border border-border px-4 py-3 text-sm text-muted-foreground">Carregando dados do formulario...</div>}
+          {loadingOptions && <div className="rounded-xl bg-secondary/50 border border-border px-4 py-3 text-sm text-muted-foreground">Carregando dados do formulário...</div>}
 
-          <Field label="Titulo do edital">
-            <input required value={form.titulo} onChange={(e) => update("titulo", e.target.value)} className={inputCls} placeholder="Ex.: Recuperacao de nascentes - Bacia do Tocantins" />
+          <Field label="Título do edital">
+            <input required value={form.titulo} onChange={(e) => update("titulo", e.target.value)} className={inputCls} placeholder="Ex.: Recuperação de nascentes - Bacia do Tocantins" />
           </Field>
 
           <div className="grid sm:grid-cols-3 gap-4">
-            <Field label="Frente de atuacao">
+            <Field label="Frente de atuação">
               <select required value={form.frenteAtuacaoId} onChange={(e) => update("frenteAtuacaoId", e.target.value)} className={inputCls}>
                 {frentes.map((item) => <option key={item.id} value={item.id}>{item.nome}</option>)}
               </select>
             </Field>
-            <Field label="Regiao imediata">
+            <Field label="Região imediata">
               <select required value={form.regiaoImediataId} onChange={(e) => update("regiaoImediataId", e.target.value)} className={inputCls}>
                 {regioes.map((item) => <option key={item.id} value={item.id}>{item.nome}</option>)}
               </select>
             </Field>
-            <Field label="Orgao proponente">
+            <Field label="Órgão proponente">
               <select required value={form.orgaoProponenteId} onChange={(e) => update("orgaoProponenteId", e.target.value)} className={inputCls}>
                 {orgaos.map((item) => <option key={item.id} value={item.id}>{item.nome}</option>)}
               </select>
@@ -218,22 +218,22 @@ export default function NovoEditalModal({ onClose, onCreated }: { onClose: () =>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Field label="Valor minimo">
+            <Field label="Valor mínimo">
               <input required type="number" min="0.01" step="0.01" value={form.valorMinimo} onChange={(e) => update("valorMinimo", e.target.value)} className={inputCls} placeholder="500000" />
             </Field>
-            <Field label="Valor maximo">
+            <Field label="Valor máximo">
               <input required type="number" min="0.01" step="0.01" value={form.valorMaximo} onChange={(e) => update("valorMaximo", e.target.value)} className={inputCls} placeholder="1500000" />
             </Field>
-            <Field label="Inicio das inscricoes">
+            <Field label="Início das inscrições">
               <input required type="date" value={form.inicioRecebimentoPropostas} onChange={(e) => update("inicioRecebimentoPropostas", e.target.value)} className={inputCls} />
             </Field>
-            <Field label="Fim das inscricoes">
+            <Field label="Fim das inscrições">
               <input required type="date" value={form.fimRecebimentoPropostas} onChange={(e) => update("fimRecebimentoPropostas", e.target.value)} className={inputCls} />
             </Field>
           </div>
 
           <Field label="Resumo">
-            <textarea required rows={4} value={form.resumo} onChange={(e) => update("resumo", e.target.value)} className={inputCls + " resize-none"} placeholder="Breve descricao da chamada, escopo e publico-alvo." />
+            <textarea required rows={4} value={form.resumo} onChange={(e) => update("resumo", e.target.value)} className={inputCls + " resize-none"} placeholder="Breve descrição da chamada, escopo e público-alvo." />
           </Field>
 
           <section className="rounded-2xl border border-border bg-secondary/25 p-4 space-y-3">
@@ -252,8 +252,8 @@ export default function NovoEditalModal({ onClose, onCreated }: { onClose: () =>
           <section className="rounded-2xl border border-border bg-secondary/25 p-4 space-y-3">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">Criterios de avaliacao</div>
-                <p className="text-xs text-muted-foreground mt-1">Cada criterio recebera uma nota de 1 a 10 pelos avaliadores.</p>
+                <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">Critérios de avaliação</div>
+                <p className="text-xs text-muted-foreground mt-1">Cada critério receberá uma nota de 1 a 10 pelos avaliadores.</p>
               </div>
               <button type="button" onClick={addCriterio} className="rounded-full border border-border bg-card px-3 py-2 text-xs hover:bg-secondary transition-colors">Adicionar</button>
             </div>
@@ -269,8 +269,8 @@ export default function NovoEditalModal({ onClose, onCreated }: { onClose: () =>
                         <input required value={criterio.nome} onChange={(e) => updateCriterio(index, "nome", e.target.value)} className={inputCls + " mt-1"} placeholder="Ex.: Impacto ambiental" />
                       </div>
                       <div className="sm:col-span-7">
-                        <label className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground font-mono">Descricao</label>
-                        <input value={criterio.descricao} onChange={(e) => updateCriterio(index, "descricao", e.target.value)} className={inputCls + " mt-1"} placeholder="O que sera observado neste criterio" />
+                        <label className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground font-mono">Descrição</label>
+                        <input value={criterio.descricao} onChange={(e) => updateCriterio(index, "descricao", e.target.value)} className={inputCls + " mt-1"} placeholder="O que será observado neste critério" />
                       </div>
                     </div>
                     {criterios.length > 1 && (

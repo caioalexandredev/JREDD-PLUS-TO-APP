@@ -20,7 +20,7 @@ export default function Step2({ value, edital, onChange }: Props) {
       <Section title="Dados gerais do projeto">
         <Grid>
           <Field label="Nome do projeto" span={12} required>
-            <Input value={value.nomeProjeto} onChange={(e) => set("nomeProjeto", e.target.value)} placeholder="Recuperacao de nascentes - Bacia do Tocantins" />
+            <Input value={value.nomeProjeto} onChange={(e) => set("nomeProjeto", e.target.value)} placeholder="Recuperação de nascentes - Bacia do Tocantins" />
           </Field>
           <Field label="Edital relacionado" span={12} required>
             <Input value={edital ? `#${edital.id} - ${edital.titulo}` : "Carregando edital..."} readOnly />
@@ -42,7 +42,7 @@ export default function Step2({ value, edital, onChange }: Props) {
       <Section title="Problema e justificativa">
         <Grid>
           <Field label="Justificativa e merito" span={12} required>
-            <Textarea value={value.justificativaMerito} onChange={(e) => set("justificativaMerito", e.target.value)} maxLength={1500} placeholder="Qual a relevancia e tamanho do problema identificado?" />
+            <Textarea value={value.justificativaMerito} onChange={(e) => set("justificativaMerito", e.target.value)} maxLength={1500} placeholder="Qual a relevância e tamanho do problema identificado?" />
           </Field>
         </Grid>
       </Section>
