@@ -1,103 +1,109 @@
 "use client";
 
 import { motion } from "motion/react";
-import { editais, Edital, EditalStatus, statusColor, statuses } from "@/mock/EditalData";
 import { AnimatePresence } from "framer-motion";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import NovoEditalModal from "./NovoEditalModal";
 import Link from "next/link";
-import { mockSubs } from "@/mock/AdminSubmission";
 import DemonstrationTable from "@/libs/table/DemonstrationTable";
 import Tabs, { TabOption } from "@/libs/tab/Tabs";
 import SubmissaoCard from "./SubmissaoCard";
 import { api } from "@/libs/api";
 import { toast } from "sonner";
 import NavBarInterna from "@/libs/nav/NavBarInterna";
+import {
+  editalStatusColor,
+  editalStatusLabel,
+  EditalResumoApi,
+  EditalStatusApi,
+  formatCurrency,
+  formatCurrencyRange,
+  formatDate,
+  PageResponse,
+  ProjetoIndicadoresApi,
+  ProjetoResumoApi,
+} from "@/libs/jredd-api-types";
 
 const TABS: TabOption[] = [
   { value: "editais", label: "Editais publicados" },
   { value: "submissoes", label: "Submissoes recebidas" },
 ];
 
-type EditalResumoApi = {
-  id: number;
-  titulo: string;
-  frenteAtuacao: string;
-  regiaoImediata: string;
-  valorMinimo?: number;
-  valorMaximo: number;
-  status: "RASCUNHO" | "ABERTO" | "EM_AVALIACAO" | "ENCERRADO";
-  inicioRecebimentoPropostas: string;
-  fimRecebimentoPropostas: string;
-  resumo: string;
-  orgaoProponente: string;
+const editalStatusOptions: Array<"Todos" | EditalStatusApi> = ["Todos", "RASCUNHO", "ABERTO", "EM_AVALIACAO", "ENCERRADO"];
+
+const emptyIndicators: ProjetoIndicadoresApi = {
+  totalSubmissoes: 0,
+  submetidos: 0,
+  emAvaliacao: 0,
+  aprovados: 0,
+  reprovados: 0,
+  emExecucao: 0,
 };
 
 export default function Admin() {
   const [tab, setTab] = useState<string>("editais");
-  const [items, setItems] = useState<Edital[]>(editais);
+  const [editais, setEditais] = useState<EditalResumoApi[]>([]);
+  const [projetos, setProjetos] = useState<ProjetoResumoApi[]>([]);
+  const [indicadores, setIndicadores] = useState<ProjetoIndicadoresApi>(emptyIndicators);
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"Todos" | EditalStatus>("Todos");
+  const [statusFilter, setStatusFilter] = useState<"Todos" | EditalStatusApi>("Todos");
+  const [loadingEditais, setLoadingEditais] = useState(true);
+  const [loadingProjetos, setLoadingProjetos] = useState(true);
 
   const loadEditais = useCallback(async () => {
+    setLoadingEditais(true);
     try {
-      const page = await api<{ content: EditalResumoApi[] }>("/admin/editais");
-      const emAnalise = statuses.find((status) => String(status).toLowerCase().includes("an")) ?? "Encerrado";
-      const statusMap = {
-        RASCUNHO: "Encerrado",
-        ABERTO: "Aberto",
-        EM_AVALIACAO: emAnalise,
-        ENCERRADO: "Encerrado",
-      } as const;
-
-      setItems(page.content.map((edital): Edital => ({
-        id: String(edital.id),
-        title: edital.titulo,
-        region: edital.regiaoImediata,
-        value: formatMi(edital.valorMaximo),
-        valueNumber: edital.valorMaximo,
-        deadline: edital.fimRecebimentoPropostas,
-        deadlineDays: 0,
-        theme: edital.frenteAtuacao,
-        status: statusMap[edital.status] as EditalStatus,
-        publishedAt: edital.inicioRecebimentoPropostas,
-        agency: edital.orgaoProponente,
-        modality: "Chamada publica",
-        publicTarget: [],
-        summary: edital.resumo,
-        scope: [],
-        eligibility: [],
-        timeline: [],
-        documents: [],
-        contact: { name: "Coordenacao JREDD+", email: "editais@jredd.to.gov.br", phone: "(63) 3218-0000" },
-      })));
+      const page = await api<PageResponse<EditalResumoApi>>("/admin/editais?size=100");
+      setEditais(page.content ?? []);
     } catch {
-      setItems(editais);
-      toast.error("Nao foi possivel carregar editais do backend. Exibindo dados demonstrativos.");
+      setEditais([]);
+      toast.error("Nao foi possivel carregar editais do backend.");
+    } finally {
+      setLoadingEditais(false);
+    }
+  }, []);
+
+  const loadProjetos = useCallback(async () => {
+    setLoadingProjetos(true);
+    try {
+      const [page, stats] = await Promise.all([
+        api<PageResponse<ProjetoResumoApi>>("/projetos?size=100"),
+        api<ProjetoIndicadoresApi>("/projetos/indicadores"),
+      ]);
+      setProjetos(page.content ?? []);
+      setIndicadores(stats);
+    } catch {
+      setProjetos([]);
+      setIndicadores(emptyIndicators);
+      toast.error("Nao foi possivel carregar submissoes do backend.");
+    } finally {
+      setLoadingProjetos(false);
     }
   }, []);
 
   useEffect(() => {
     loadEditais();
-  }, [loadEditais]);
+    loadProjetos();
+  }, [loadEditais, loadProjetos]);
 
   const filteredEditais = useMemo(
-    () => items.filter((e) => {
-      if (statusFilter !== "Todos" && e.status !== statusFilter) return false;
-      if (query && !`${e.title} ${e.id} ${e.theme} ${e.region}`.toLowerCase().includes(query.toLowerCase())) return false;
+    () => editais.filter((edital) => {
+      if (statusFilter !== "Todos" && edital.status !== statusFilter) return false;
+      if (query && !`${edital.titulo} ${edital.id} ${edital.frenteAtuacao} ${edital.regiaoImediata}`.toLowerCase().includes(query.toLowerCase())) return false;
       return true;
     }),
-    [items, query, statusFilter],
+    [editais, query, statusFilter],
   );
 
-  const totalValue = items.reduce((s, e) => s + e.valueNumber, 0);
+  const totalValue = editais.reduce((sum, edital) => sum + (edital.valorMaximo ?? 0), 0);
+  const aprovacao = indicadores.totalSubmissoes > 0 ? Math.round((indicadores.aprovados / indicadores.totalSubmissoes) * 100) : 0;
 
   const stats = [
-    { l: "Editais", v: items.length.toString(), sub: `${items.filter((e) => e.status === "Aberto").length} abertos` },
-    { l: "Submissoes", v: mockSubs.length.toString(), sub: `${mockSubs.filter((s) => String(s.status).toLowerCase().includes("an")).length} em analise` },
-    { l: "Valor publicado", v: formatMi(totalValue), sub: "Carteira ativa" },
-    { l: "Aprovacao", v: `${Math.round((mockSubs.filter((s) => s.status === "Aprovado").length / mockSubs.length) * 100)}%`, sub: "ultimos 90 dias" },
+    { l: "Editais", v: editais.length.toString(), sub: `${editais.filter((edital) => edital.status === "ABERTO").length} abertos` },
+    { l: "Submissoes", v: String(indicadores.totalSubmissoes ?? 0), sub: `${indicadores.emAvaliacao ?? 0} em avaliacao` },
+    { l: "Valor publicado", v: formatCurrency(totalValue), sub: "Carteira ativa" },
+    { l: "Aprovacao", v: `${aprovacao}%`, sub: "Projetos aprovados" },
   ];
 
   return (
@@ -107,7 +113,7 @@ export default function Admin() {
       <div className="mx-auto max-w-7xl px-6 py-12">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
-            <div className="text-xs uppercase tracking-[0.22em] text-muted-foreground font-mono"><span className="text-destructive">●</span> Painel administrativo</div>
+            <div className="text-xs uppercase tracking-[0.22em] text-muted-foreground font-mono"><span className="text-destructive">o</span> Painel administrativo</div>
             <h1 className="mt-3 font-display text-4xl sm:text-5xl tracking-[-0.02em] leading-[1.02]">
               Gestao de <span className="text-gradient italic">editais</span>
             </h1>
@@ -134,8 +140,10 @@ export default function Admin() {
                 <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Buscar edital por codigo, frente ou regiao" className="w-full pl-10 pr-4 py-3 rounded-xl bg-card border border-border text-sm focus:outline-none focus:border-ocean focus:ring-4 focus:ring-ocean/10 transition-all" />
               </div>
               <div className="flex gap-1 p-1 bg-secondary rounded-xl overflow-x-auto">
-                {(["Todos", ...statuses] as const).map((f) => (
-                  <button key={f} onClick={() => setStatusFilter(f)} className={`text-xs px-3 py-2 rounded-lg whitespace-nowrap transition-all ${statusFilter === f ? "bg-card shadow-soft text-foreground" : "text-muted-foreground hover:text-foreground"}`}>{f}</button>
+                {editalStatusOptions.map((status) => (
+                  <button key={status} onClick={() => setStatusFilter(status)} className={`text-xs px-3 py-2 rounded-lg whitespace-nowrap transition-all ${statusFilter === status ? "bg-card shadow-soft text-foreground" : "text-muted-foreground hover:text-foreground"}`}>
+                    {status === "Todos" ? "Todos" : editalStatusLabel(status)}
+                  </button>
                 ))}
               </div>
             </div>
@@ -153,29 +161,30 @@ export default function Admin() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredEditais.map((e) => (
-                    <tr key={e.id} className="border-t border-border hover:bg-secondary/30 transition-colors">
+                  {filteredEditais.map((edital) => (
+                    <tr key={edital.id} className="border-t border-border hover:bg-secondary/30 transition-colors">
                       <td className="px-5 py-4">
                         <div className="py-4">
-                          <div className="font-medium leading-tight">{e.title}</div>
-                          <div className="text-xs text-muted-foreground font-mono mt-0.5">{e.id} · {e.publishedAt}</div>
+                          <div className="font-medium leading-tight">{edital.titulo}</div>
+                          <div className="text-xs text-muted-foreground font-mono mt-0.5">#{edital.id} - {formatDate(edital.inicioRecebimentoPropostas)}</div>
                         </div>
                       </td>
-                      <td className="px-5 py-4 hidden md:table-cell text-muted-foreground">{e.theme}</td>
-                      <td className="px-5 py-4 hidden lg:table-cell text-muted-foreground">{e.region}</td>
-                      <td className="px-5 py-4 font-display">{e.value}</td>
+                      <td className="px-5 py-4 hidden md:table-cell text-muted-foreground">{edital.frenteAtuacao || "-"}</td>
+                      <td className="px-5 py-4 hidden lg:table-cell text-muted-foreground">{edital.regiaoImediata || "-"}</td>
+                      <td className="px-5 py-4 font-display">{formatCurrencyRange(edital.valorMinimo, edital.valorMaximo)}</td>
                       <td className="px-5 py-4">
-                        <span className={`text-[10px] uppercase tracking-[0.16em] font-mono px-2 py-0.5 rounded-full border ${statusColor(e.status)}`}>{e.status}</span>
+                        <span className={`text-[10px] uppercase tracking-[0.16em] font-mono px-2 py-0.5 rounded-full border ${editalStatusColor(edital.status)}`}>{editalStatusLabel(edital.status)}</span>
                       </td>
                       <td className="px-5 py-4 text-right">
-                        <Link href="/editais/$id" className="text-xs px-3 py-1.5 rounded-full border border-border hover:bg-secondary hover:border-primary/40 transition-all inline-flex items-center gap-1">
+                        <Link href={`/admin/editais/${edital.id}`} className="text-xs px-3 py-1.5 rounded-full border border-border hover:bg-secondary hover:border-primary/40 transition-all inline-flex items-center gap-1">
                           Abrir
                           <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" /></svg>
                         </Link>
                       </td>
                     </tr>
                   ))}
-                  {filteredEditais.length === 0 && (
+                  {loadingEditais && <tr><td colSpan={6} className="px-5 py-16 text-center text-muted-foreground">Carregando editais...</td></tr>}
+                  {!loadingEditais && filteredEditais.length === 0 && (
                     <tr><td colSpan={6} className="px-5 py-16 text-center text-muted-foreground">Nenhum edital encontrado.</td></tr>
                   )}
                 </tbody>
@@ -186,8 +195,10 @@ export default function Admin() {
 
         {tab === "submissoes" && (
           <div className="mt-6 space-y-3">
-            {mockSubs.map((s, idx) => (
-              <SubmissaoCard key={s.id} idx={idx} s={s} />
+            {loadingProjetos && <div className="rounded-2xl border border-dashed border-border py-16 text-center text-muted-foreground">Carregando submissoes...</div>}
+            {!loadingProjetos && projetos.length === 0 && <div className="rounded-2xl border border-dashed border-border py-16 text-center text-muted-foreground">Nenhuma submissao encontrada.</div>}
+            {!loadingProjetos && projetos.map((projeto, idx) => (
+              <SubmissaoCard key={projeto.id} idx={idx} projeto={projeto} />
             ))}
           </div>
         )}
@@ -207,6 +218,3 @@ export default function Admin() {
     </div>
   );
 }
-
-const formatMi = (v: number) =>
-  v >= 1_000_000 ? `R$ ${(v / 1_000_000).toFixed(1)} mi` : `R$ ${(v / 1_000).toFixed(0)} mil`;
