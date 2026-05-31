@@ -118,6 +118,9 @@ export default function Avaliador() {
   }, [selected]);
 
   useEffect(() => {
+    setScores({});
+    setComments({});
+    
     if (!activeProject) {
       setActiveProjectDetail(null);
       return;
