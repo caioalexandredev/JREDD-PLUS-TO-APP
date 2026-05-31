@@ -14,6 +14,7 @@ import {
   formatCurrencyRange,
   formatDate,
 } from "@/libs/jredd-api-types";
+import { FileUploadAside } from "@/libs/fields/FileUploadAside";
 
 const API_URL = (process.env.NEXT_PUBLIC_API_URL?.trim() || "http://localhost:8282").replace(/\/$/, "");
 
@@ -52,23 +53,24 @@ export default function AdminEditalDetalhePage() {
     setFiles(Array.from(event.target.files ?? []));
   };
 
-  const uploadAndLink = async () => {
-    if (!editalId || files.length === 0) {
+  const uploadAndLink = async (filesToUpload: File[]) => {
+    if (!editalId || filesToUpload.length === 0) {
       toast.error("Selecione ao menos um documento.");
-      return;
+      throw new Error("Nenhum documento selecionado."); // Importante para o catch no componente filho não limpar os arquivos
     }
+    
     setUploading(true);
     try {
-      const uploaded = await Promise.all(files.map((file) => uploadDocumento(file, "EDITAL")));
+      const uploaded = await Promise.all(filesToUpload.map((file) => uploadDocumento(file, "EDITAL")));
       await api<DocumentoEditalApi[]>(`/editais/${editalId}/documentos`, {
         method: "POST",
         body: JSON.stringify({ documentosIds: uploaded.map((documento) => documento.id) }),
       });
       toast.success("Documento(s) vinculado(s) ao edital.");
-      setFiles([]);
       await loadEdital();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Nao foi possivel enviar os documentos.");
+      throw err; // Repassa o erro para que o filho não apague a lista em caso de falha
     } finally {
       setUploading(false);
     }
@@ -141,33 +143,10 @@ export default function AdminEditalDetalhePage() {
                 </div>
               </section>
 
-              <aside className="bg-card border border-border rounded-3xl p-6 h-fit">
-                <div className="text-[10px] uppercase tracking-[0.2em] font-mono text-muted-foreground">Adicionar documentos</div>
-                <p className="mt-2 text-sm text-muted-foreground">Envie novos arquivos com contexto de edital e vincule-os imediatamente a esta chamada.</p>
-                <input
-                  type="file"
-                  multiple
-                  onChange={onFilesChange}
-                  disabled={uploading}
-                  className="mt-5 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm"
-                />
-                {files.length > 0 && (
-                  <div className="mt-4 space-y-2">
-                    {files.map((file) => (
-                      <div key={`${file.name}-${file.size}`} className="rounded-xl bg-secondary/60 px-3 py-2 text-xs text-muted-foreground">
-                        {file.name}
-                      </div>
-                    ))}
-                  </div>
-                )}
-                <button
-                  onClick={uploadAndLink}
-                  disabled={uploading || files.length === 0}
-                  className="mt-5 w-full rounded-full bg-gradient-hero text-primary-foreground px-4 py-2.5 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {uploading ? "Enviando..." : "Enviar e vincular"}
-                </button>
-              </aside>
+              <FileUploadAside 
+                uploading={uploading} 
+                onUpload={uploadAndLink} 
+              />
             </div>
 
             <section className="bg-card border border-border rounded-3xl overflow-hidden">

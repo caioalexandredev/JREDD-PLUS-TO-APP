@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import Field from "@/libs/fields/Field";
 import { api, uploadDocumento, User } from "@/libs/api";
 import info from "@/config/app.info";
+import { FileDropzone } from "@/libs/fields/FileDropzone";
 
 type Option = {
   id: number;
@@ -99,16 +100,16 @@ export default function NovoEditalModal({ onClose, onCreated }: { onClose: () =>
     );
   };
 
-  const uploadArquivos = async (files: FileList | null) => {
-    if (!files?.length) return;
+  const uploadArquivos = async (files: File[]) => {
+    if (!files || files.length === 0) return;
     try {
       setSubmitting(true);
-      const enviados = await Promise.all(Array.from(files).map((file) => uploadDocumento(file, "EDITAL")));
+      const enviados = await Promise.all(files.map((file) => uploadDocumento(file, "EDITAL")));
       setDocumentos((current) => [...current, ...enviados.map((documento) => ({
         id: documento.id,
         nomeOriginal: documento.nomeOriginal,
       }))]);
-      toast.success("Documento enviado.");
+      toast.success("Documento(s) enviado(s).");
     } catch {
       toast.error("Nao foi possivel enviar o documento.");
     } finally {
@@ -289,7 +290,11 @@ export default function NovoEditalModal({ onClose, onCreated }: { onClose: () =>
                 <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">Documentos do edital</div>
                 <p className="text-xs text-muted-foreground mt-1">Envie ao menos um documento oficial.</p>
               </div>
-              <input type="file" accept="application/pdf,.pdf,.doc,.docx" multiple onChange={(e) => uploadArquivos(e.target.files)} className="text-sm max-w-full" disabled={submitting} />
+              <FileDropzone
+                onFilesSelected={uploadArquivos}
+                disabled={submitting}
+                accept="application/pdf,.pdf,.doc,.docx"
+              />
             </div>
             <div className="space-y-2">
               {documentos.map((documento) => (

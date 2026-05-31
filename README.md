@@ -215,13 +215,62 @@ Este projeto está sob licença privada. Todos os direitos reservados © EcoVert
 
 ---
 
-## 🤖 Aviso sobre Inteligência Artificial
+## 🤖 Uso de Inteligência Artificial no Desenvolvimento
 
-> Este projeto foi desenvolvido com o auxílio de ferramentas de **Inteligência Artificial generativa**, incluindo assistentes de código baseados em IA (como o Claude, da Anthropic), que contribuíram na geração, revisão e refatoração de trechos de código, estruturas de componentes e documentação.
->
-> O uso de IA foi supervisionado pela equipe de desenvolvimento, que manteve a responsabilidade pelas decisões arquiteturais, revisão crítica do código gerado e adequação ao contexto do projeto.
->
-> A adoção de IA no processo de desenvolvimento tem como objetivo acelerar a entrega de valor, mantendo os padrões de qualidade, segurança e missão da plataforma EcoVertice Tocantins.
+> Este projeto foi desenvolvido com o auxílio de múltiplas ferramentas de **Inteligência Artificial generativa**, cada uma com papel específico na construção da plataforma EcoVertice Tocantins.
+
+### 🛠️ Ferramentas Utilizadas
+
+| Ferramenta | Papel no Projeto |
+|------------|-----------------|
+| **[Lovable](https://lovable.dev/)** | Geração dos layouts e interfaces visuais da plataforma — componentes, páginas e design system |
+| **[OpenAI Codex](https://openai.com/codex)** | Implantação e integração da API no frontend, automação de lógica de negócio e refatoração de código |
+| **[Google Gemini](https://gemini.google.com/)** | Orientações de arquitetura de software, estratégias de componentização e estruturação da documentação técnica |
+| **[Claude (Anthropic)](https://claude.ai/)** | Revisão de código, geração de trechos específicos e suporte à documentação |
+
+### 💬 Exemplos de Prompts Utilizados
+
+Abaixo alguns exemplos representativos dos prompts empregados durante o desenvolvimento:
+
+**Lovable — Geração de Interface**
+```
+Crie uma dashboard para beneficiários de créditos de carbono com:
+- Cards de resumo (créditos disponíveis, distribuições recebidas, projetos vinculados)
+- Tabela de histórico de transações com filtro por período
+- Mapa interativo com os projetos REDD+ do Tocantins
+- Paleta verde sustentável, tipografia moderna, responsivo mobile-first
+```
+
+**Codex — Integração de API**
+```
+Implemente no frontend Next.js a integração com o endpoint POST /api/projetos/registrar.
+Use fetch com tratamento de erro, loading state, e exiba notificação toast de sucesso/erro via Sonner.
+Valide os campos obrigatórios antes do envio e use TypeScript com tipagem estrita.
+```
+
+**Gemini — Arquitetura e Componentização**
+```
+Estou construindo uma plataforma Next.js com App Router para rastreabilidade de créditos de carbono.
+Tenho 3 perfis de usuário (beneficiário, gestor, auditor) com dashboards distintos.
+Como devo estruturar as pastas, layouts e rotas para máxima reutilização de componentes,
+mantendo separação clara de responsabilidades e facilitando a adição futura de novos módulos?
+```
+
+**Claude — Documentação Técnica**
+```
+Com base nessa estrutura de projeto Next.js com os módulos: cadastro, registro de projetos,
+rastreabilidade, distribuição de fundos e auditoria, gere uma documentação técnica
+dos endpoints da API incluindo parâmetros, tipos, exemplos de request/response
+e códigos de erro possíveis.
+```
+
+### ⚠️ Supervisão Humana
+
+Todo o conteúdo gerado por IA foi supervisionado pela equipe de desenvolvimento, que manteve responsabilidade pelas decisões arquiteturais, revisão crítica do código e adequação ao contexto e missão da plataforma.
+
+O uso de IA tem como objetivo **acelerar a entrega de valor**, mantendo os padrões de qualidade, segurança e o compromisso socioambiental da EcoVertice Tocantins.
+
+---
 
 ---
 
