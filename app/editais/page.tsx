@@ -89,12 +89,20 @@ export default function EditaisPage() {
                     Inscricoes: {formatDate(edital.inicioRecebimentoPropostas)} a {formatDate(edital.fimRecebimentoPropostas)}
                   </span>
                 </div>
-                <Link
-                  href={`/auth?next=${encodeURIComponent(`/submeter?editalId=${edital.id}`)}`}
-                  className="mt-5 inline-flex rounded-full border border-border px-4 py-2 text-sm hover:bg-secondary transition-colors"
-                >
-                  Submeter proposta
-                </Link>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  <Link
+                    href={`/editais/${edital.id}`}
+                    className="inline-flex rounded-full border border-border px-4 py-2 text-sm hover:bg-secondary transition-colors"
+                  >
+                    Ver edital
+                  </Link>
+                  <Link
+                    href={`/auth?next=${encodeURIComponent(`/submeter?editalId=${edital.id}`)}`}
+                    className="inline-flex rounded-full bg-gradient-hero text-primary-foreground px-4 py-2 text-sm font-medium hover:shadow-soft transition-all"
+                  >
+                    Submeter proposta
+                  </Link>
+                </div>
               </article>
             ))}
           </section>

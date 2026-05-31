@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { toast } from "sonner";
 import DashboardHeader from "@/components/shared/DashboardHeader";
 import DemonstrationTable from "@/libs/table/DemonstrationTable";
 import { api } from "@/libs/api";
+import { evidenciaStatusColor, evidenciaStatusLabel, StatusEvidenciaApi } from "@/libs/jredd-api-types";
 
 type Atividade = {
   id: number;
@@ -22,7 +24,7 @@ type Evidencia = {
   atividade?: string;
   fotoDocumentoId: string;
   descricao: string;
-  status: "PENDENTE" | "APROVADA" | "REJEITADA";
+  status: StatusEvidenciaApi;
   comentarioAuditor?: string;
   criadoEm: string;
 };
@@ -58,13 +60,17 @@ export default function Auditor() {
     { l: "Validadas", v: String(selected?.evidencias.filter((item) => item.status === "APROVADA").length ?? 0), sub: "aprovadas" },
   ], [projetos.length, selected]);
 
-  const validar = async (evidenciaId: number, status: "APROVADA" | "REJEITADA") => {
+  const validar = async (evidenciaId: number, status: "APROVADA" | "REPROVADA" | "APROVADA_COM_RESSALVAS") => {
+    if ((status === "REPROVADA" || status === "APROVADA_COM_RESSALVAS") && !comments[evidenciaId]?.trim()) {
+      toast.error("Informe um parecer para reprovar ou aprovar com ressalvas.");
+      return;
+    }
     try {
       await api(`/auditor/evidencias/${evidenciaId}/validar`, {
         method: "POST",
         body: JSON.stringify({ status, comentario: comments[evidenciaId] ?? "" }),
       });
-      toast.success(status === "APROVADA" ? "Evidencia aprovada." : "Evidencia rejeitada.");
+      toast.success(status === "APROVADA" ? "Evidencia aprovada." : "Parecer registrado.");
       if (selected) {
         const refreshed = await api<Projeto>(`/projetos/${selected.id}`);
         setSelected(refreshed);
@@ -98,6 +104,11 @@ export default function Auditor() {
               <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">Cronograma</div>
               <h2 className="mt-2 font-display text-2xl">{selected?.nome ?? "Nenhum projeto"}</h2>
               <p className="text-sm text-muted-foreground">{selected?.proponente}</p>
+              {selected && (
+                <Link href={`/projeto/${selected.id}`} className="mt-3 inline-flex rounded-full border border-border px-3 py-1.5 text-xs hover:bg-secondary transition-colors">
+                  Abrir detalhe
+                </Link>
+              )}
             </div>
             {selected?.atividades.map((atividade) => (
               <div key={atividade.id} className="px-5 py-4 border-t border-border">
@@ -123,14 +134,15 @@ export default function Auditor() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className={`text-[10px] uppercase tracking-[0.16em] font-mono px-2 py-0.5 rounded-full border ${evidencia.status === "APROVADA" ? "bg-leaf/15 text-leaf border-leaf/30" : evidencia.status === "REJEITADA" ? "bg-destructive/10 text-destructive border-destructive/30" : "bg-ocean/15 text-ocean border-ocean/30"}`}>{evidencia.status}</span>
+                      <span className={`text-[10px] uppercase tracking-[0.16em] font-mono px-2 py-0.5 rounded-full border ${evidenciaStatusColor(evidencia.status)}`}>{evidenciaStatusLabel(evidencia.status)}</span>
                       <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">{evidencia.atividade ?? "Sem atividade"}</span>
                     </div>
                     <p className="mt-2 text-sm leading-relaxed">{evidencia.descricao}</p>
                     {evidencia.comentarioAuditor && <p className="mt-2 text-xs text-muted-foreground">Parecer: {evidencia.comentarioAuditor}</p>}
                     <textarea value={comments[evidencia.id] ?? ""} onChange={(e) => setComments((prev) => ({ ...prev, [evidencia.id]: e.target.value }))} placeholder="Parecer do auditor" className="mt-3 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm min-h-20" />
                     <div className="mt-3 flex justify-end gap-2">
-                      <button onClick={() => validar(evidencia.id, "REJEITADA")} className="rounded-full border border-border px-4 py-2 text-sm hover:bg-secondary">Rejeitar</button>
+                      <button onClick={() => validar(evidencia.id, "REPROVADA")} className="rounded-full border border-border px-4 py-2 text-sm hover:bg-secondary">Reprovar</button>
+                      <button onClick={() => validar(evidencia.id, "APROVADA_COM_RESSALVAS")} className="rounded-full border border-border px-4 py-2 text-sm hover:bg-secondary">Aprovar com ressalvas</button>
                       <button onClick={() => validar(evidencia.id, "APROVADA")} className="rounded-full bg-gradient-hero text-primary-foreground px-4 py-2 text-sm">Aprovar</button>
                     </div>
                   </div>

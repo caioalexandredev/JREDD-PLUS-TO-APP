@@ -23,6 +23,7 @@ const protectedRoutes: Array<{ prefix: string; profiles: Profile[] }> = [
   { prefix: "/submeter", profiles: ["PROPONENTE"] },
   { prefix: "/avaliador", profiles: ["AVALIADOR"] },
   { prefix: "/auditor", profiles: ["AUDITOR"] },
+  { prefix: "/projeto", profiles: ["PROPONENTE", "ADMINISTRADOR", "AVALIADOR", "AUDITOR"] },
 ];
 
 const apiRoutePrefixes = [

@@ -46,7 +46,7 @@ export default function EditalCard({ projeto, idx }: Props) {
             </div>
           </div>
           <Link
-            href={`/submeter?editalId=${projeto.editalId ?? ""}`}
+            href={`/projeto/${projeto.id}`}
             className="inline-flex items-center gap-1.5 text-sm px-4 py-2 rounded-full border border-border hover:bg-secondary hover:border-primary/40 transition-all"
           >
             Abrir

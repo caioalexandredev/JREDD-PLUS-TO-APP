@@ -14,6 +14,8 @@ import {
   ProjetoDetalheApi,
   ProjetoIndicadoresApi,
   ProjetoResumoApi,
+  evidenciaStatusColor,
+  evidenciaStatusLabel,
   projetoStatusLabel,
   StatusProjetoApi,
 } from "@/libs/jredd-api-types";
@@ -107,6 +109,17 @@ export default function Proponente() {
         <HeroProponente setOpen={setOpen} />
         <DemonstrationTable values={stats} cols={4} light />
 
+        <section className="mt-8 bg-card border border-border rounded-2xl p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">Editais abertos</div>
+            <h2 className="mt-1 font-display text-2xl">Submeter novo projeto</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Consulte os editais com inscricoes abertas e inicie uma submissao.</p>
+          </div>
+          <button onClick={() => setOpen(true)} className="rounded-full bg-gradient-hero text-primary-foreground px-5 py-2.5 text-sm font-medium">
+            Ver editais abertos
+          </button>
+        </section>
+
         <div className="mt-10 flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
           <div className="relative flex-1">
             <svg className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
@@ -150,7 +163,7 @@ export default function Proponente() {
           <section className="mt-12">
             <div className="mb-5">
               <div className="text-xs uppercase tracking-[0.22em] text-muted-foreground font-mono"><span className="text-leaf">o</span> Acompanhamento</div>
-              <h2 className="mt-2 font-display text-3xl">Projetos em execucao</h2>
+              <h2 className="mt-2 font-display text-3xl">Projetos em acompanhamento</h2>
             </div>
             <div className="space-y-4">
               {projetosExecucao.map((projeto) => (
@@ -160,7 +173,7 @@ export default function Proponente() {
                       <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-mono">Auditor: {projeto.auditor || "Nao definido"}</div>
                       <h3 className="mt-2 font-display text-2xl">{projeto.nome}</h3>
                       <div className="mt-4 grid md:grid-cols-2 gap-2">
-                        {projeto.atividades.map((atividade) => (
+                        {(projeto.atividades ?? []).map((atividade) => (
                           <div key={atividade.id} className="rounded-xl bg-secondary/50 border border-border p-3">
                             <div className="text-sm font-medium">{atividade.nome || atividade.descricao || `Atividade ${atividade.id}`}</div>
                             <div className="text-xs text-muted-foreground mt-1">{atividade.status || "Sem status"}</div>
@@ -170,15 +183,24 @@ export default function Proponente() {
                     </div>
                     <div className="lg:w-96">
                       <div className="text-sm font-medium mb-2">Nova evidencia</div>
-                      <input type="file" accept="image/*" onChange={(e) => setEvidenceFile((prev) => ({ ...prev, [projeto.id]: e.target.files?.[0] ?? null }))} className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm" />
+                      <input type="file" onChange={(e) => setEvidenceFile((prev) => ({ ...prev, [projeto.id]: e.target.files?.[0] ?? null }))} className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm" />
                       <textarea value={evidenceText[projeto.id] ?? ""} onChange={(e) => setEvidenceText((prev) => ({ ...prev, [projeto.id]: e.target.value }))} placeholder="Descreva a evidencia enviada" className="mt-3 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm min-h-24" />
                       <button onClick={() => enviarEvidencia(projeto.id)} className="mt-3 w-full rounded-full bg-gradient-hero text-primary-foreground px-4 py-2.5 text-sm font-medium">Enviar evidencia</button>
                     </div>
                   </div>
-                  {projeto.evidencias.length > 0 && (
-                    <div className="mt-5 pt-4 border-t border-border flex flex-wrap gap-2">
-                      {projeto.evidencias.map((evidencia) => (
-                        <span key={evidencia.id} className="text-xs px-3 py-1 rounded-full bg-secondary text-muted-foreground">{evidencia.status} - {evidencia.descricao}</span>
+                  {(projeto.evidencias ?? []).length > 0 && (
+                    <div className="mt-5 pt-4 border-t border-border space-y-3">
+                      {(projeto.evidencias ?? []).map((evidencia) => (
+                        <div key={evidencia.id} className="rounded-xl border border-border bg-secondary/40 p-3">
+                          <div className="flex items-center justify-between gap-3">
+                            <span className={`text-[10px] uppercase tracking-[0.16em] font-mono px-2 py-0.5 rounded-full border ${evidenciaStatusColor(evidencia.status)}`}>
+                              {evidenciaStatusLabel(evidencia.status)}
+                            </span>
+                            <span className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground font-mono">{evidencia.criadoEm?.slice(0, 10) ?? ""}</span>
+                          </div>
+                          <p className="mt-2 text-sm text-foreground/80">{evidencia.descricao}</p>
+                          {evidencia.comentarioAuditor && <p className="mt-2 text-xs text-muted-foreground">Parecer: {evidencia.comentarioAuditor}</p>}
+                        </div>
                       ))}
                     </div>
                   )}

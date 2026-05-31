@@ -41,7 +41,7 @@ export default function SubmissaoCard({ idx, projeto }: Props) {
               <div className={`h-full ${progresso >= 80 ? "bg-leaf" : progresso >= 60 ? "bg-ocean" : "bg-gradient-hero"}`} style={{ width: `${Math.min(100, progresso)}%` }} />
             </div>
           </div>
-          <Link href={`/evaluation/${projeto.id}`} className="inline-flex items-center gap-1.5 text-sm px-4 py-2 rounded-full border border-border hover:bg-secondary hover:border-primary/40 transition-all">
+          <Link href={`/projeto/${projeto.id}`} className="inline-flex items-center gap-1.5 text-sm px-4 py-2 rounded-full border border-border hover:bg-secondary hover:border-primary/40 transition-all">
             Abrir
             <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </Link>
