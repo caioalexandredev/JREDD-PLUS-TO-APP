@@ -1,6 +1,6 @@
 import Navbar from "@/components/home/navbar";
 import Rodape from "@/components/home/rodape";
-import Transparencia from "@/components/home/transparencia";
+import Transparencia from "@/components/transparencia";
 
 export default function TransparenciaPage() {
   return (
