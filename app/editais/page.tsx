@@ -21,7 +21,7 @@ export default function EditaisPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    api<PageResponse<EditalResumoApi>>("/editais?size=100", { skipUnauthorizedRedirect: true })
+    api<PageResponse<EditalResumoApi>>("/editais?situacao=ABERTO&size=100", { skipUnauthorizedRedirect: true })
       .then((page) => {
         setEditais(page.content ?? []);
         setError("");
